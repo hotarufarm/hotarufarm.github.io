@@ -1084,15 +1084,21 @@ footer ul{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;list-style
 </div>
 <script>
 /* 行の終わりに来た「、」を見えなくする。改行そのものが間になるので、
-   点が残ると重なって見える。画面の幅が変わるたびにやり直す */
+   点が残ると重なって見える。
+   注意: ページを開いた直後は、まだ文字の位置が決まっていない。
+   そこで測ると「全部が行末」と誤判定する（2026年9月10日にそうなった）。
+   だから、写真や書体が出そろってから何度か測り直す */
 (function () {
   var marks = [].slice.call(document.querySelectorAll(".kt"));
   if (!marks.length) return;
 
-  /* 「、」の次に来る文字が、どの行にあるかを測る */
+  /* 「、」の次に来る文字が、どの行にあるかを測る。
+     ・数値 … その文字の高さの真ん中
+     ・null … 後ろに文字が無い（＝行の終わり）
+     ・NaN  … まだ測れない（＝何もしない） */
   function nextCharCenter(el) {
     var block = el.closest("p,h1,h2,h3,h4,dd,dt,li,span,figcaption");
-    if (!block) return null;
+    if (!block) return NaN;
     var walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
     var passed = false, node;
     while ((node = walker.nextNode())) {
@@ -1101,27 +1107,36 @@ footer ul{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;list-style
       var r = document.createRange();
       r.setStart(node, 0); r.setEnd(node, 1);
       var box = r.getBoundingClientRect();
-      return box.height ? box.top + box.height / 2 : null;
+      return box.height ? box.top + box.height / 2 : NaN;
     }
-    return null;                                  /* 後ろに文字が無い */
+    return null;
   }
 
   function update() {
     marks.forEach(function (m) { m.classList.remove("off"); });
     marks.forEach(function (m) {
+      var a = m.getBoundingClientRect();
+      if (!a.height || !a.width) return;          /* まだ描かれていない。触らない */
       var next = nextCharCenter(m);
       if (next === null) { m.classList.add("off"); return; }
-      var a = m.getBoundingClientRect();
-      var lh = parseFloat(getComputedStyle(m.parentElement).lineHeight) || 20;
+      if (isNaN(next)) return;                    /* まだ測れない。触らない */
+      var lh = parseFloat(getComputedStyle(m.parentElement).lineHeight);
+      if (!lh) lh = a.height * 1.6;
       if (next - (a.top + a.height / 2) > lh * 0.5) {
         m.classList.add("off");                   /* 次の文字が下の行にある */
       }
     });
   }
+
   var timer;
   function later() { clearTimeout(timer); timer = setTimeout(update, 120); }
-  update();
+
+  update();                                        /* とりあえず一度 */
+  window.addEventListener("load", update);         /* 写真が出そろったら */
   window.addEventListener("resize", later);
+  window.addEventListener("orientationchange", later);
+  setTimeout(update, 300);                         /* 念のため2回 */
+  setTimeout(update, 1200);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
 })();
 (function () {
