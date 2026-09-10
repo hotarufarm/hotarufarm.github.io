@@ -378,7 +378,9 @@ td.free{text-align:center;color:var(--green);font-weight:600;background:#eef3ee}
 
 /* ── おにぎりの具物語 ── */
 .chara-hero{
-  width:100%;max-width:900px;margin:0 auto 40px;
+  /* height:auto を書かないと、幅だけ縮んで高さが元のまま残り、
+     スマホで縦に引き伸ばされる（2026年9月10日にそうなっていた） */
+  display:block;width:100%;height:auto;max-width:900px;margin:0 auto 40px;
   border-radius:12px;box-shadow:0 10px 30px rgba(30,51,41,.14);
 }
 .story-concept{
