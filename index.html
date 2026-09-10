@@ -390,6 +390,9 @@ td.free{text-align:center;color:var(--green);font-weight:600;background:#eef3ee}
   letter-spacing:.04em;
 }
 /* 押したときに開く大きい表示。横長の絵なので、指で横になぞって見てもらう */
+/* hidden より display:flex のほうが強いので、消す指定を必ず書く。
+   これが無いと最初から開いたままになる（2026年9月10日にそうなった） */
+.lightbox[hidden]{display:none}
 .lightbox{
   position:fixed;inset:0;z-index:100;
   background:rgba(18,28,23,.94);
