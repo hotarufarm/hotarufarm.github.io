@@ -29,6 +29,9 @@
     --hime: #dc6f98;
     --masamune: #7b50b2;
     --hitomi: #d9a514;
+    --gold: #c88f27;
+    --gold-ink: #241d12;
+    --scrim: rgba(18, 28, 21, .62);
     --font-display: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
     --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
     --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
@@ -39,6 +42,7 @@
       --line: #2a352c; --accent: #84c28e; --accent-ink: #0e1a11; --accent-soft: #203026;
       --bubble: #1f2a22; --track: #263027; --warn-bg: #2a1c15; --warn-ink: #f2b893; --warn-line: #5b3a27;
       --nishiki: #f07a5f; --hime: #f39bbd; --masamune: #b08ae0; --hitomi: #f1c84b;
+      --gold: #e2b35a; --gold-ink: #1d1708; --scrim: rgba(0, 0, 0, .7);
       color-scheme: dark;
     }
   }
@@ -47,6 +51,7 @@
     --line: #2a352c; --accent: #84c28e; --accent-ink: #0e1a11; --accent-soft: #203026;
     --bubble: #1f2a22; --track: #263027; --warn-bg: #2a1c15; --warn-ink: #f2b893; --warn-line: #5b3a27;
     --nishiki: #f07a5f; --hime: #f39bbd; --masamune: #b08ae0; --hitomi: #f1c84b;
+    --gold: #e2b35a; --gold-ink: #1d1708; --scrim: rgba(0, 0, 0, .7);
     color-scheme: dark;
   }
 
@@ -159,6 +164,47 @@
   .gang { display: flex; justify-content: center; gap: 4px; margin-top: 6px; }
   .gang img { width: 58px; height: auto; }
 
+  /* ありがとうのイラスト（ご予約の方だけ） */
+  .thanks-btn { display: flex; align-items: center; gap: 12px; width: 100%; cursor: pointer;
+                text-align: left; padding: 10px 18px 10px 10px; border: 0; border-radius: 999px;
+                background: var(--gold); color: var(--gold-ink); font-family: var(--font-display);
+                box-shadow: 0 4px 0 color-mix(in srgb, var(--gold) 55%, #000);
+                transition: transform .08s, box-shadow .08s; }
+  .thanks-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--gold) 55%, #000); }
+  .thanks-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .thanks-btn img { width: 52px; height: 52px; object-fit: contain; flex: none; }
+  .thanks-btn span { font-weight: 900; font-size: 17px; line-height: 1.35; min-width: 0; }
+  .thanks-btn small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 12.5px; opacity: .8; }
+
+  .ov { position: fixed; inset: 0; z-index: 50; background: var(--scrim);
+        display: flex; align-items: flex-start; justify-content: center; overflow-y: auto;
+        padding: calc(env(safe-area-inset-top, 0px) + 18px) 16px calc(env(safe-area-inset-bottom, 0px) + 24px); }
+  .ov-box { width: 100%; max-width: 460px; background: var(--paddy); border-radius: 22px;
+            padding: 16px 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .ov-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ov-head h2 { font-family: var(--font-display); font-weight: 900; font-size: 20px; margin: 0; }
+  .ov-x { flex: none; width: 40px; height: 40px; border-radius: 999px; border: 1px solid var(--line);
+          background: var(--surface); color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer; }
+  .ov-x:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .ov-lead, .ov-foot { margin: 0; font-size: 13px; color: var(--muted); }
+  .ov-cards { display: flex; flex-direction: column; gap: 14px; }
+  .tcard { --c: var(--accent); position: relative; border-radius: 18px; overflow: hidden;
+           background: linear-gradient(170deg, color-mix(in srgb, var(--c) 22%, var(--surface)) 0%, var(--surface) 70%);
+           border: 2px solid color-mix(in srgb, var(--c) 55%, var(--surface));
+           padding: 14px 16px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .tcard .ribbon { font-family: var(--font-display); font-weight: 900; font-size: 15px; letter-spacing: .2em;
+                   color: var(--surface); background: var(--c); padding: 3px 16px; border-radius: 999px; }
+  .tcard img { width: 100%; max-width: 300px; height: auto; display: block; }
+  .tcard img.koko { max-width: 100%; border-radius: 12px; }
+  .tcard .msg { position: relative; background: var(--surface); border: 1.5px solid color-mix(in srgb, var(--c) 45%, var(--line));
+                border-radius: 14px; padding: 10px 14px; font-family: var(--font-display); font-weight: 700;
+                font-size: 15.5px; line-height: 1.65; text-align: left; width: 100%; }
+  .tcard .from { align-self: flex-end; font-size: 13px; color: var(--muted); }
+  .tcard.c-nishiki { --c: var(--nishiki); }
+  .tcard.c-hime { --c: var(--hime); }
+  .tcard.c-masamune { --c: var(--masamune); }
+  .tcard.c-hitomi { --c: var(--hitomi); }
+
   footer { text-align: center; font-size: 12.5px; color: var(--muted); line-height: 1.9; }
   footer a { color: var(--muted); }
 
@@ -218,6 +264,11 @@
         <div class="k" id="r-times"></div>
       </div>
 
+      <button class="thanks-btn" type="button" id="thanks-open" aria-haspopup="dialog">
+        <img src="img/f-onigirikko.png" alt="">
+        <span>ありがとうのイラストを見る<small>ご予約いただいた方だけの絵です</small></span>
+      </button>
+
       <div class="card">
         <h2>ご予約の内わけ</h2>
         <div class="items" id="r-items"></div>
@@ -229,6 +280,20 @@
       <button class="btn-sub" type="button" id="again">番号を入れなおす</button>
     </div>
   </section>
+
+  <!-- ありがとうのイラスト -->
+  <div class="ov" id="ov" hidden role="dialog" aria-modal="true" aria-labelledby="ov-title">
+    <div class="ov-box">
+      <div class="ov-head">
+        <h2 id="ov-title">あなただけの、ありがとう</h2>
+        <button class="ov-x" type="button" id="ov-x" aria-label="とじる">×</button>
+      </div>
+      <p class="ov-lead">この絵は、ご予約いただいた方だけが見られます。お米を守っている子たちから、ひとことずつ。</p>
+      <div class="ov-cards" id="ov-cards"></div>
+      <p class="ov-foot">携帯によっては、絵を長押しすると保存できます。</p>
+      <button class="btn-sub" type="button" id="ov-close">とじる</button>
+    </div>
+  </div>
 
   <footer>
     <div class="gang" aria-hidden="true">
@@ -277,6 +342,28 @@
     "ひとめぼれ": { img: "img/f-hitomi.png",   name: "ひとみ",   cls: "c-hitomi" }
   };
 
+  // ありがとうの絵（品種ごと）。コーちゃんの絵が届いたら、ファイルの場所を入れる。
+  // 空のあいだは、いまのキャラクターの絵で仮のカードを出す。
+  const ARIGATO = {
+    "ササニシキ": "",
+    "つや姫":     "",
+    "だて正夢":   "",
+    "ひとめぼれ": ""
+  };
+  // その人だけの特別な絵（あれば）。確認番号 → ファイルの場所
+  const TOKUBETSU = {};
+
+  // それぞれの子からのひとこと（声の設定に合わせる）
+  const KOTOBA = {
+    "ササニシキ": "おれたちのササニシキを選んでくれて、ありがとな！ 最後のひと粒まで、おれがしっかり守るぜ。",
+    "つや姫":     "つや姫を選んでくれて、ありがとう♡ あなたのごはんが、毎日つやつやおいしく炊けますように！",
+    "だて正夢":   "だて正夢を選んでくれて、ありがとう。ぼくが土の力で、ちゃんと見守っているからね。",
+    "ひとめぼれ": "ひとめぼれ選んでくれて、ほんまおおきに！ ひと口食べたら、笑顔になること間違いなしやで〜！"
+  };
+
+  let current = null;   // いま表示中の { code, rows }
+  let opener = null;
+
   const $ = (id) => document.getElementById(id);
   const kz = (n) => (Math.round(n * 10) / 10).toLocaleString("ja-JP");
   const clean = (s) => (s || "").toUpperCase().replace(/[^0-9A-Z]/g, "");
@@ -297,7 +384,47 @@
     return e;
   }
 
+  function openThanks() {
+    if (!current) return;
+    const box = $("ov-cards");
+    box.replaceChildren();
+    const toku = TOKUBETSU[current.code];
+    if (toku) {
+      const card = el("div", "tcard");
+      card.append(el("div", "ribbon", "ありがとう"));
+      const im = el("img", "koko"); im.src = toku; im.alt = "あなただけのイラスト"; card.append(im);
+      card.append(el("div", "msg", "いつもホタル農園を応援してくださって、ありがとうございます。"));
+      card.append(el("div", "from", "— ホタル農園と、みんなより"));
+      box.append(card);
+    }
+    const seen = [];
+    current.rows.forEach(([name]) => {
+      const v = name.split(" ")[0];
+      if (seen.includes(v) || !CHARA[v]) return;
+      seen.push(v);
+      const ch = CHARA[v];
+      const card = el("div", "tcard " + ch.cls);
+      card.append(el("div", "ribbon", "ありがとう"));
+      const im = el("img", ARIGATO[v] ? "koko" : null);
+      im.src = ARIGATO[v] || ch.img; im.alt = ch.name;
+      card.append(im, el("div", "msg", KOTOBA[v]), el("div", "from", "— " + ch.name + "より"));
+      box.append(card);
+    });
+    opener = document.activeElement;
+    $("ov").hidden = false;
+    document.body.style.overflow = "hidden";
+    $("ov").scrollTop = 0;
+    $("ov-x").focus();
+  }
+
+  function closeThanks() {
+    $("ov").hidden = true;
+    document.body.style.overflow = "";
+    if (opener && opener.focus) opener.focus();
+  }
+
   function show(code, rows) {
+    current = { code, rows };
     let res = 0, done = 0, left = 0;
     const box = $("r-items");
     box.replaceChildren();
@@ -367,7 +494,14 @@
     show(hit, DATA[hit]);
   });
 
+  $("thanks-open").addEventListener("click", openThanks);
+  $("ov-x").addEventListener("click", closeThanks);
+  $("ov-close").addEventListener("click", closeThanks);
+  $("ov").addEventListener("click", (e) => { if (e.target === $("ov")) closeThanks(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("ov").hidden) closeThanks(); });
+
   $("again").addEventListener("click", () => {
+    current = null;
     $("result").hidden = true;
     $("lookup").hidden = false;
     $("sample").hidden = false;
