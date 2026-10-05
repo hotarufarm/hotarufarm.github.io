@@ -68,7 +68,7 @@
 
   /* おにぎりっこの案内 */
   .guide { display: flex; align-items: flex-end; gap: 10px; }
-  .guide img { width: 84px; height: auto; flex: none; }
+  .guide img { width: 96px; height: auto; flex: none; }
   .bubble { position: relative; flex: 1; min-width: 0; background: var(--bubble);
             border: 1.5px solid var(--line); border-radius: 16px; padding: 10px 14px;
             font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 1.55;
@@ -107,10 +107,10 @@
 
   /* 品種の行（担当のキャラクターつき） */
   .items { display: flex; flex-direction: column; gap: 10px; }
-  .item { --c: var(--accent); display: grid; grid-template-columns: 58px 1fr; gap: 4px 12px;
+  .item { --c: var(--accent); display: grid; grid-template-columns: 68px 1fr; gap: 4px 12px;
           align-items: center; background: var(--surface); border: 1px solid var(--line);
           border-left: 5px solid var(--c); border-radius: 14px; padding: 10px 14px 12px 10px; }
-  .item img { grid-row: 1 / span 3; width: 58px; height: auto; align-self: end; }
+  .item img { grid-row: 1 / span 3; width: 68px; height: auto; align-self: end; }
   .item-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; min-width: 0; }
   .item-name { font-size: 17px; font-weight: 700; min-width: 0; }
   .item-name small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); line-height: 1.3; }
@@ -130,9 +130,9 @@
   .codeline b { font-family: var(--font-mono); letter-spacing: .16em; color: var(--ink); }
 
   .remain { position: relative; overflow: hidden; background: var(--accent); color: var(--accent-ink);
-            border-radius: 18px; padding: 18px 20px 18px 120px; min-height: 132px;
+            border-radius: 18px; padding: 18px 20px 18px 132px; min-height: 140px;
             display: flex; flex-direction: column; justify-content: center; gap: 0; }
-  .remain img { position: absolute; left: 10px; bottom: -6px; width: 104px; height: auto; }
+  .remain img { position: absolute; left: 6px; bottom: 6px; width: 120px; height: auto; }
   .remain .t { font-size: 13.5px; opacity: .88; }
   .remain .v { font-family: var(--font-display); font-weight: 900; font-size: 50px; line-height: 1.1;
                font-variant-numeric: tabular-nums; }
@@ -157,7 +157,7 @@
              background: var(--surface); color: var(--accent); border: 1.5px solid var(--accent); }
 
   .gang { display: flex; justify-content: center; gap: 4px; margin-top: 6px; }
-  .gang img { width: 46px; height: auto; }
+  .gang img { width: 58px; height: auto; }
 
   footer { text-align: center; font-size: 12.5px; color: var(--muted); line-height: 1.9; }
   footer a { color: var(--muted); }
@@ -179,7 +179,7 @@
   </header>
 
   <div class="guide">
-    <img src="img/c-onigirikko.png" alt="おにぎりっこ">
+    <img src="img/f-onigirikko.png" alt="おにぎりっこ">
     <div class="bubble" id="bubble" aria-live="polite">確認番号を入れてね！<br>お預かりしているお米が分かるよ。</div>
   </div>
 
@@ -197,7 +197,7 @@
     <div class="sample-head"><span class="pill">見本</span>番号を入れると、このように出ます</div>
     <div class="items" style="margin-top:8px">
       <div class="item c-nishiki">
-        <img src="img/c-nishiki.png" alt="">
+        <img src="img/f-nishiki.png" alt="">
         <div class="item-top"><span class="item-name">ササニシキ 精米<small>にしきがお預かり中</small></span>
           <span class="item-left">40<span>kg</span></span></div>
         <div class="bar"><span style="width:66.7%"></span></div>
@@ -212,7 +212,7 @@
       <div class="codeline"><span>確認番号　<b id="r-code"></b></span><span id="r-date"></span></div>
 
       <div class="remain">
-        <img src="img/c-onigirikko.png" alt="">
+        <img src="img/f-onigirikko.png" alt="">
         <div class="t">いまお預かりしている残り</div>
         <div class="v" id="r-left">0<small>kg</small></div>
         <div class="k" id="r-times"></div>
@@ -226,14 +226,14 @@
 
       <div class="note" id="r-note"></div>
 
-      <button class="btn-sub" type="button" id="again">ほかの番号を見る</button>
+      <button class="btn-sub" type="button" id="again">番号を入れなおす</button>
     </div>
   </section>
 
   <footer>
     <div class="gang" aria-hidden="true">
-      <img src="img/c-nishiki.png" alt=""><img src="img/c-hime.png" alt="">
-      <img src="img/c-masamune.png" alt=""><img src="img/c-hitomi.png" alt="">
+      <img src="img/f-nishiki.png" alt=""><img src="img/f-hime.png" alt="">
+      <img src="img/f-masamune.png" alt=""><img src="img/f-hitomi.png" alt="">
     </div>
     ホタル農園　<a href="https://hotarufarm.github.io/" target="_blank" rel="noopener">ホームページ</a><br>
     この画面にはお名前・ご住所・お電話番号は入っておりません。
@@ -271,10 +271,10 @@
 
   // 品種 → 担当のキャラクター
   const CHARA = {
-    "ササニシキ": { img: "img/c-nishiki.png",  name: "にしき",   cls: "c-nishiki" },
-    "つや姫":     { img: "img/c-hime.png",     name: "ひめ",     cls: "c-hime" },
-    "だて正夢":   { img: "img/c-masamune.png", name: "まさむね", cls: "c-masamune" },
-    "ひとめぼれ": { img: "img/c-hitomi.png",   name: "ひとみ",   cls: "c-hitomi" }
+    "ササニシキ": { img: "img/f-nishiki.png",  name: "にしき",   cls: "c-nishiki" },
+    "つや姫":     { img: "img/f-hime.png",     name: "ひめ",     cls: "c-hime" },
+    "だて正夢":   { img: "img/f-masamune.png", name: "まさむね", cls: "c-masamune" },
+    "ひとめぼれ": { img: "img/f-hitomi.png",   name: "ひとみ",   cls: "c-hitomi" }
   };
 
   const $ = (id) => document.getElementById(id);
