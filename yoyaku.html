@@ -230,6 +230,38 @@
   .g-next { margin: 0; width: 100%; text-align: center; font-family: var(--font-display); font-weight: 700;
             font-size: 15px; line-height: 1.6; color: var(--accent); background: var(--surface);
             border: 1.5px dashed var(--line); border-radius: 14px; padding: 10px 14px; }
+  .aeta { width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+          padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .aeta-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+               font-family: var(--font-display); font-weight: 700; font-size: 14.5px; color: var(--accent); }
+  .aeta-head b { font-size: 19px; font-variant-numeric: tabular-nums; }
+  .aeta-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px 4px; }
+  .aeta-i { --c: var(--line); position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; }
+  .aeta-i .maru { width: 52px; height: 52px; border-radius: 999px; overflow: hidden; display: grid; place-items: center;
+                  background: var(--surface); border: 2px solid var(--line); }
+  .aeta-i .maru img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .aeta-i:not(.ok) .maru { background: var(--track); }
+  .aeta-i:not(.ok) .maru img { filter: brightness(0); opacity: .32; }
+  .aeta-i.ok .maru { background: color-mix(in srgb, var(--c) 22%, var(--surface)); border-color: var(--c); }
+  .aeta-i.toku .maru { border: 2px dashed var(--gold); background: transparent;
+                       font-family: var(--font-display); font-weight: 900; font-size: 22px; color: var(--gold); }
+  .aeta-i.toku.ok .maru { border-style: solid; box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent); }
+  .aeta-i.toku.ok .maru img { object-fit: cover; }
+  .aeta-i span { font-size: 11px; line-height: 1.3; color: var(--muted); white-space: nowrap; max-width: 100%;
+                 overflow: hidden; text-overflow: ellipsis; }
+  .aeta-i.ok span { color: var(--ink); font-weight: 700; }
+  .aeta-i em { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-style: normal; font-family: var(--font-display); font-weight: 900;
+               font-size: 10px; letter-spacing: .04em; padding: 1px 6px; border-radius: 999px;
+               background: var(--gold); color: var(--gold-ink); }
+  .aeta-i.c-nishiki { --c: var(--nishiki); } .aeta-i.c-hime { --c: var(--hime); }
+  .aeta-i.c-masamune { --c: var(--masamune); } .aeta-i.c-hitomi { --c: var(--hitomi); }
+  .aeta-i.c-minori { --c: var(--minori); } .aeta-i.c-hikari { --c: var(--hikari); }
+  .aeta-i.c-ibuki { --c: var(--ibuki); } .aeta-i.c-mana { --c: var(--mana); }
+  .aeta-zen { margin: 0; text-align: center; font-family: var(--font-display); font-weight: 900; font-size: 15.5px; color: var(--gold); }
+  @media (prefers-reduced-motion: no-preference) {
+    .aeta-i.new .maru { animation: hajimete .7s cubic-bezier(.2,1.6,.4,1) both; }
+    @keyframes hajimete { from { transform: scale(.4); } to { transform: none; } }
+  }
   .g-next small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 12.5px; color: var(--muted); }
   @media (prefers-reduced-motion: no-preference) {
     .flip.spin .flip-in { animation: kurukuru 1.9s cubic-bezier(.12,.6,.22,1) forwards; }
@@ -301,7 +333,7 @@
 
       <button class="thanks-btn" type="button" id="thanks-open" aria-haspopup="dialog">
         <img src="img/f-onigirikko.png" alt="">
-        <span>ひみつの贈りものをひらく<small>お米をご予約いただいた方だけに</small></span>
+        <span>ひみつの贈りものをひらく<small id="thanks-sub">お米をご予約いただいた方だけに</small></span>
       </button>
 
       <div class="card">
@@ -338,6 +370,11 @@
         </div>
         <button class="btn-main g-again" type="button" id="g-again" hidden>もういちど ひく</button>
         <p class="g-next" id="g-next" hidden>今日の一枚です。また明日、ひきに来てね！<small>一日に一枚、だれかがやってきます</small></p>
+        <section class="aeta" id="aeta" aria-label="これまでに会えた子">
+          <div class="aeta-head"><span>これまでに会えた子</span><b id="aeta-n">0／0</b></div>
+          <div class="aeta-list" id="aeta-list"></div>
+          <p class="aeta-zen" id="aeta-zen" hidden>みんなに会えたね！ いつも、ほんとうにありがとう。</p>
+        </section>
       </div>
       <p class="ov-foot">ひらいた方だけの、ひみつです。まだの方には、ないしょにしてくださいね。<br>携帯によっては、絵を長押しすると保存できます。</p>
       <button class="btn-sub" type="button" id="ov-close">とじる</button>
@@ -462,9 +499,9 @@
       if (seen.includes(v) || !CHARA[v]) return;
       seen.push(v);
       const ch = CHARA[v];
-      p.push({ key: ch.name, name: ch.name, cls: ch.cls, img: ARIGATO[v] || ch.img, kotoba: KOTOBA[v], w: 2 });
+      p.push({ key: ch.name, name: ch.name, cls: ch.cls, img: ARIGATO[v] || ch.img, thumb: ch.img, kotoba: KOTOBA[v], w: 2 });
     });
-    NAKAMA.forEach(n => p.push({ key: n.name, name: n.name, cls: n.cls, img: n.e || n.img, kotoba: n.kotoba, w: 1 }));
+    NAKAMA.forEach(n => p.push({ key: n.name, name: n.name, cls: n.cls, img: n.e || n.img, thumb: n.img, kotoba: n.kotoba, w: 1 }));
     return p;
   }
 
@@ -500,6 +537,59 @@
     return pool().find(c => c.key === key) || null;
   }
 
+  // これまでに会えた子（その携帯に覚える）
+  const KAGI_A = (code) => "hotaru-aeta-" + code;
+  const memoA = {};
+  function yomuAeta(code) {
+    let v = memoA[code] || [];
+    try { const t = JSON.parse(localStorage.getItem(KAGI_A(code)) || "null"); if (Array.isArray(t)) v = t; } catch (e) {}
+    return v.slice();
+  }
+  function kakuAeta(code, key) {
+    const v = yomuAeta(code);
+    const hajimete = !v.includes(key);
+    if (hajimete) v.push(key);
+    memoA[code] = v;
+    try { localStorage.setItem(KAGI_A(code), JSON.stringify(v)); } catch (e) {}
+    return hajimete;
+  }
+  function kazoeru() {
+    const met = yomuAeta(current.code), all = pool();
+    const n = all.filter(c => met.includes(c.key)).length + (met.includes("toku") ? 1 : 0);
+    return { met, all, n, total: all.length + 1 };
+  }
+  function botanNoMoji() {
+    if (!current) return;
+    const k = kazoeru();
+    $("thanks-sub").textContent = k.n > 0 ? "これまでに会えた子　" + k.n + "／" + k.total : "お米をご予約いただいた方だけに";
+  }
+  function egakuAeta(newKey) {
+    const k = kazoeru(), list = $("aeta-list");
+    list.replaceChildren();
+    k.all.forEach(c => {
+      const ok = k.met.includes(c.key);
+      const li = el("div", "aeta-i " + c.cls + (ok ? " ok" : "") + (c.key === newKey ? " new" : ""));
+      const maru = el("b", "maru");
+      const im = el("img"); im.src = c.thumb; im.alt = ok ? c.name : "まだ会っていない子";
+      maru.append(im);
+      li.append(maru, el("span", null, ok ? c.name : "？？？"));
+      if (c.key === newKey) li.append(el("em", null, "はじめて！"));
+      list.append(li);
+    });
+    const tok = k.met.includes("toku");
+    const li = el("div", "aeta-i toku" + (tok ? " ok" : "") + (newKey === "toku" ? " new" : ""));
+    const tmaru = el("b", "maru");
+    if (tok) { const im = el("img"); im.src = TOKUBETSU[current.code] || MINNA; im.alt = "とくべつな一枚"; tmaru.append(im); }
+    else tmaru.textContent = "？";
+    li.append(tmaru);
+    li.append(el("span", null, tok ? "とくべつ" : "？？？"));
+    if (newKey === "toku") li.append(el("em", null, "はじめて！"));
+    list.append(li);
+    $("aeta-n").textContent = k.n + "／" + k.total;
+    $("aeta-zen").hidden = k.n < k.total;
+    botanNoMoji();
+  }
+
   function eWoOku(c) {
     const img = $("g-img");
     if (c.toku) { img.src = TOKUBETSU[current.code] || MINNA; img.alt = "8人とおにぎりっこ、みんなで"; }
@@ -528,6 +618,8 @@
     const card = $("g-card");
     card.hidden = false;
     card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop");
+    const hajimete = mode === "atari" ? kakuAeta(current.code, c.key) : false;
+    egakuAeta(hajimete ? c.key : null);
     const tame = current.code === OTAMESHI;
     $("g-again").textContent = "もういちど ひく（お試し用）";
     $("g-again").hidden = !tame;
@@ -566,6 +658,7 @@
     pool().forEach(c => { const i = new Image(); i.src = c.img; });
     const t = new Image(); t.src = TOKUBETSU[current.code] || MINNA;
     last = null;
+    egakuAeta(null);
     opener = document.activeElement;
     $("ov").hidden = false;
     document.body.style.overflow = "hidden";
@@ -586,6 +679,7 @@
 
   function show(code, rows) {
     current = { code, rows };
+    setTimeout(botanNoMoji, 0);
     let res = 0, done = 0, left = 0;
     const box = $("r-items");
     box.replaceChildren();
