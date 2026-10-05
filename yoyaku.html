@@ -214,6 +214,16 @@
   .tcard.c-hikari { --c: var(--hikari); }
   .tcard.c-ibuki { --c: var(--ibuki); }
   .tcard.c-mana { --c: var(--mana); }
+  .tcard.finale { --c: var(--gold); border-width: 3px;
+                  box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 22%, transparent), 0 12px 28px rgba(0,0,0,.14); }
+  .tcard.finale .ribbon { color: var(--gold-ink); letter-spacing: .12em; }
+  .finale-head { color: var(--gold) !important; }
+  @media (prefers-reduced-motion: no-preference) {
+    .ov.opening .tcard, .ov.opening .nakama-head { animation: arawareru .5s both; animation-delay: calc(var(--i, 0) * 110ms + 120ms); }
+    .ov.opening .tcard.finale { animation: arawareru-toku .9s both; animation-delay: calc(var(--i, 0) * 110ms + 260ms); }
+    @keyframes arawareru { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+    @keyframes arawareru-toku { 0% { opacity: 0; transform: scale(.94); filter: brightness(1.6); } 60% { opacity: 1; filter: brightness(1.15); } 100% { opacity: 1; transform: none; filter: none; } }
+  }
   .nakama-head { display: flex; align-items: center; gap: 10px; font-family: var(--font-display);
                  font-weight: 900; font-size: 15px; color: var(--accent); margin-top: 6px; }
   .nakama-head::before, .nakama-head::after { content: ""; flex: 1; height: 1px; background: var(--line); }
@@ -279,7 +289,7 @@
 
       <button class="thanks-btn" type="button" id="thanks-open" aria-haspopup="dialog">
         <img src="img/f-onigirikko.png" alt="">
-        <span>ありがとうのイラストを見る<small>ご予約いただいた方だけの絵です</small></span>
+        <span>ひみつの贈りものをひらく<small>お米をご予約いただいた方だけに</small></span>
       </button>
 
       <div class="card">
@@ -298,12 +308,12 @@
   <div class="ov" id="ov" hidden role="dialog" aria-modal="true" aria-labelledby="ov-title">
     <div class="ov-box">
       <div class="ov-head">
-        <h2 id="ov-title">あなただけの、ありがとう</h2>
+        <h2 id="ov-title">あなたへの、ひみつの贈りもの</h2>
         <button class="ov-x" type="button" id="ov-x" aria-label="とじる">×</button>
       </div>
-      <p class="ov-lead">この絵は、ご予約いただいた方だけが見られます。お米を守っている子たちと、なかまたちから、ひとことずつ。</p>
+      <p class="ov-lead">お米をご予約いただいた方だけが、ひらける贈りものです。</p>
       <div class="ov-cards" id="ov-cards"></div>
-      <p class="ov-foot">携帯によっては、絵を長押しすると保存できます。</p>
+      <p class="ov-foot">ひらいた方だけの、ひみつです。まだの方には、ないしょにしてくださいね。<br>携帯によっては、絵を長押しすると保存できます。</p>
       <button class="btn-sub" type="button" id="ov-close">とじる</button>
     </div>
   </div>
@@ -364,10 +374,10 @@
     "ひとめぼれ": "img/a/39f8ec6b52.jpg"    // ひとみ
   };
   // その人だけの特別な絵（あれば）。確認番号 → ファイルの場所
-  // みんなの絵（8人とおにぎりっこ）＝ img/a/7dd3657ed6.jpg
-  const TOKUBETSU = {
-    "484-601": "img/a/7dd3657ed6.jpg"   // ホタルさんのお試し
-  };
+  // とくべつな一枚（8人とおにぎりっこ）。お米を予約した人みんなの、さいごの一枚
+  const MINNA = "img/a/7dd3657ed6.jpg";
+  // その人だけの特別な絵（あれば）。確認番号 → ファイルの場所
+  const TOKUBETSU = {};
 
   // なかまたち（野菜の4人）。コーちゃんの絵が届いたら e にファイルの場所を入れる
   const NAKAMA = [
@@ -447,7 +457,19 @@
       card.append(im, el("div", "msg", n.kotoba), el("div", "from", "— " + n.name + "より"));
       box.append(card);
     });
+    // さいごに、とくべつな一枚
+    const fh = el("div", "nakama-head finale-head", "とくべつな一枚");
+    box.append(fh);
+    const fin = el("div", "tcard finale");
+    fin.append(el("div", "ribbon", "とくべつな一枚"));
+    const fim = el("img", "koko"); fim.src = MINNA; fim.alt = "8人とおにぎりっこ、みんなで";
+    fin.append(fim,
+      el("div", "msg", "ホタル農園のお米を選んでくださって、ほんとうにありがとうございます。みんなで、心をこめてお届けします。"),
+      el("div", "from", "— ホタル農園と、8人とおにぎりっこより"));
+    box.append(fin);
+    [...box.children].forEach((c, k) => c.style.setProperty("--i", k));
     opener = document.activeElement;
+    $("ov").classList.remove("opening"); void $("ov").offsetWidth; $("ov").classList.add("opening");
     $("ov").hidden = false;
     document.body.style.overflow = "hidden";
     $("ov").scrollTop = 0;
@@ -457,6 +479,7 @@
   function closeThanks() {
     $("ov").hidden = true;
     document.body.style.overflow = "";
+    $("bubble").textContent = "贈りもののことは、ないしょだよ！";
     if (opener && opener.focus) opener.focus();
   }
 
