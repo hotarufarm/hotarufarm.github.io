@@ -227,6 +227,10 @@
            font-size: 15.5px; line-height: 1.65; }
   .g-from { align-self: flex-end; font-size: 13px; color: var(--muted); }
   .g-again { width: 100%; }
+  .g-next { margin: 0; width: 100%; text-align: center; font-family: var(--font-display); font-weight: 700;
+            font-size: 15px; line-height: 1.6; color: var(--accent); background: var(--surface);
+            border: 1.5px dashed var(--line); border-radius: 14px; padding: 10px 14px; }
+  .g-next small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 12.5px; color: var(--muted); }
   @media (prefers-reduced-motion: no-preference) {
     .flip.spin .flip-in { animation: kurukuru 1.9s cubic-bezier(.12,.6,.22,1) forwards; }
     @keyframes kurukuru { from { transform: rotateY(0deg); } to { transform: rotateY(1980deg); } }
@@ -319,7 +323,7 @@
         <h2 id="ov-title">あなたへの、ひみつの贈りもの</h2>
         <button class="ov-x" type="button" id="ov-x" aria-label="とじる">×</button>
       </div>
-      <p class="ov-lead">お米をご予約いただいた方だけが、ひらける贈りものです。ひくたびに、だれかがやってきます。</p>
+      <p class="ov-lead">お米をご予約いただいた方だけが、ひらける贈りものです。一日に一枚、だれかがやってきます。</p>
       <div class="gacha" id="gacha">
         <p class="g-head" id="g-head" aria-live="polite">くるくる…</p>
         <div class="flip" id="flip">
@@ -333,6 +337,7 @@
           <div class="g-from" id="g-from"></div>
         </div>
         <button class="btn-main g-again" type="button" id="g-again" hidden>もういちど ひく</button>
+        <p class="g-next" id="g-next" hidden>今日の一枚です。また明日、ひきに来てね！<small>一日に一枚、だれかがやってきます</small></p>
       </div>
       <p class="ov-foot">ひらいた方だけの、ひみつです。まだの方には、ないしょにしてくださいね。<br>携帯によっては、絵を長押しすると保存できます。</p>
       <button class="btn-sub" type="button" id="ov-close">とじる</button>
@@ -474,41 +479,84 @@
 
   const ugokanai = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // 一日に一枚。ホタルさんのお試し番号だけは、何回でも引ける
+  const OTAMESHI = "484-601";
+  const kyou = () => { const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+  const KAGI = (code) => "hotaru-ichimai-" + code;
+  const memo = {};   // 保存できない携帯のときの、かわり
+  function yomuKyou(code) {
+    let v = memo[code] || null;
+    try { const t = JSON.parse(localStorage.getItem(KAGI(code)) || "null"); if (t) v = t; } catch (e) {}
+    return v && v.d === kyou() ? v : null;
+  }
+  function kakuKyou(code, key) {
+    const v = { d: kyou(), key: key };
+    memo[code] = v;
+    try { localStorage.setItem(KAGI(code), JSON.stringify(v)); } catch (e) {}
+  }
+  function sagasu(key) {
+    if (key === "toku") return { key: "toku", toku: true };
+    return pool().find(c => c.key === key) || null;
+  }
+
+  function eWoOku(c) {
+    const img = $("g-img");
+    if (c.toku) { img.src = TOKUBETSU[current.code] || MINNA; img.alt = "8人とおにぎりっこ、みんなで"; }
+    else { img.src = c.img; img.alt = c.name; }
+  }
+
+  // カードを表にして、ことばを出す。mode: "atari"＝いま引いた ／ "kyou"＝今日もう引いている
+  function miseru(c, mode) {
+    const g = $("gacha"), flip = $("flip");
+    g.className = "gacha";
+    eWoOku(c);
+    flip.classList.remove("spin");
+    flip.classList.add("done");
+    if (c.toku) {
+      g.classList.add("toku");
+      $("g-head").textContent = mode === "kyou" ? "今日の一枚は、とくべつな一枚！" : "とくべつな一枚が 引けた！";
+      $("g-msg").textContent = "ホタル農園のお米を選んでくださって、ほんとうにありがとうございます。みんなで、心をこめてお届けします。";
+      $("g-from").textContent = "— ホタル農園と、8人とおにぎりっこより";
+    } else {
+      const yobi = YOBI[c.name] || c.name;
+      g.classList.add(c.cls);
+      $("g-head").textContent = mode === "kyou" ? "今日の一枚は、" + yobi + "！" : yobi + "が あたった！";
+      $("g-msg").textContent = c.kotoba;
+      $("g-from").textContent = "— " + c.name + "より";
+    }
+    const card = $("g-card");
+    card.hidden = false;
+    card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop");
+    const tame = current.code === OTAMESHI;
+    $("g-again").textContent = "もういちど ひく（お試し用）";
+    $("g-again").hidden = !tame;
+    $("g-next").hidden = tame;
+    spinning = false;
+  }
+
   function hiku() {
     if (spinning || !current) return;
+    const tame = current.code === OTAMESHI;
+    if (!tame) {
+      const k = yomuKyou(current.code);
+      const c0 = k ? sagasu(k.key) : null;
+      if (c0) { last = c0.key; miseru(c0, "kyou"); return; }
+    }
     spinning = true;
     const c = pick();
     last = c.key;
-    const g = $("gacha"), flip = $("flip"), fin = $("flip-in"), img = $("g-img");
-    g.className = "gacha";
+    if (!tame) kakuKyou(current.code, c.key);
+    const flip = $("flip"), fin = $("flip-in");
+    $("gacha").className = "gacha";
     $("g-card").hidden = true;
     $("g-again").hidden = true;
+    $("g-next").hidden = true;
     $("g-head").textContent = "くるくる…";
     flip.classList.remove("spin", "done");
     void fin.offsetWidth;
-    if (c.toku) { img.src = TOKUBETSU[current.code] || MINNA; img.alt = "8人とおにぎりっこ、みんなで"; }
-    else { img.src = c.img; img.alt = c.name; }
-
-    pending = () => {
-      flip.classList.remove("spin");
-      flip.classList.add("done");
-      if (c.toku) {
-        g.classList.add("toku");
-        $("g-head").textContent = "とくべつな一枚が 引けた！";
-        $("g-msg").textContent = "ホタル農園のお米を選んでくださって、ほんとうにありがとうございます。みんなで、心をこめてお届けします。";
-        $("g-from").textContent = "— ホタル農園と、8人とおにぎりっこより";
-      } else {
-        g.classList.add(c.cls);
-        $("g-head").textContent = (YOBI[c.name] || c.name) + "が あたった！";
-        $("g-msg").textContent = c.kotoba;
-        $("g-from").textContent = "— " + c.name + "より";
-      }
-      const card = $("g-card");
-      card.hidden = false;
-      card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop");
-      $("g-again").hidden = false;
-      spinning = false;
-    };
+    eWoOku(c);
+    pending = () => miseru(c, "atari");
     if (ugokanai()) { const f = pending; pending = null; f(); return; }
     flip.classList.add("spin");
   }
@@ -532,7 +580,7 @@
     $("flip").classList.remove("spin");
     $("ov").hidden = true;
     document.body.style.overflow = "";
-    $("bubble").textContent = "贈りもののことは、ないしょだよ！";
+    $("bubble").textContent = "贈りもののことは、ないしょだよ！ また明日ね。";
     if (opener && opener.focus) opener.focus();
   }
 
