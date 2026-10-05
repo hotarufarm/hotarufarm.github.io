@@ -394,6 +394,12 @@ td.free{text-align:center;color:var(--green);font-weight:600;background:#eef3ee}
   font-size:.98rem;line-height:2;color:#ece5d6;margin:0 0 18px;
 }
 .soldout-lead:last-of-type{margin-bottom:0}
+/* ご予約いただいた方への入口（残りの確認ページへ） */
+.notice-yoyaku{margin-top:28px;padding-top:24px;border-top:1px solid rgba(232,196,121,.25)}
+.notice-yoyaku .notice-when{margin:0}
+.notice-yoyaku .notice-btn{margin-top:14px}
+.notice-yoyaku .notice-btn img{object-fit:contain}
+.notice-yoyaku .notice-note{margin-top:12px}
 @media(max-width:520px){
   .notice{padding:30px 20px 26px}
   .when{flex-direction:column;gap:4px}
@@ -927,6 +933,11 @@ footer ul{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;list-style
         <p class="soldout-lead">たくさんの<wbr>ご予約を<i class="kt">、</i><br class="sp-br">ありがとう<wbr>ございました。<br>先行予約の<wbr>あいだに<i class="kt">、</i><br class="sp-br">ご用意していた<wbr>分が<wbr>うまってしまいました。</p>
         <p class="soldout-lead">一般予約は<i class="kt">、</i><br class="sp-br">見合わせる<wbr>ことと<wbr>いたします。<br>楽しみに<wbr>してくださっていた<wbr>方<i class="kt">、</i><br class="sp-br">申し訳ありません。</p>
         <p class="notice-note">※ 次の<wbr>ご案内は、<wbr>あらためて<wbr>こちらと<wbr>Xで<wbr>お知らせします。</p>
+        <div class="notice-yoyaku">
+          <p class="notice-when">ご予約いただいた<wbr>みなさまへ</p>
+          <a class="notice-btn" href="yoyaku.html"><img src="img/c-onigirikko.png" alt="">ご予約の残りを<wbr>確認する</a>
+          <p class="notice-note">お知らせした<wbr>確認番号<wbr>（数字6けた）で<wbr>ご覧いただけます。</p>
+        </div>
       </div>
 
       <ul class="news">
