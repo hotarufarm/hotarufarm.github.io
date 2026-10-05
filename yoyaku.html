@@ -358,23 +358,26 @@
   // ありがとうの絵（品種ごと）。コーちゃんの絵が届いたら、ファイルの場所を入れる。
   // 空のあいだは、いまのキャラクターの絵で仮のカードを出す。
   const ARIGATO = {
-    "ササニシキ": "",
-    "つや姫":     "",
-    "だて正夢":   "",
-    "ひとめぼれ": ""
+    "ササニシキ": "img/a/c212b1d703.jpg",   // にしき
+    "つや姫":     "img/a/631e90ad86.jpg",   // ひめ
+    "だて正夢":   "img/a/f78cc63b67.jpg",   // まさむね
+    "ひとめぼれ": "img/a/39f8ec6b52.jpg"    // ひとみ
   };
   // その人だけの特別な絵（あれば）。確認番号 → ファイルの場所
-  const TOKUBETSU = {};
+  // みんなの絵（8人とおにぎりっこ）＝ img/a/7dd3657ed6.jpg
+  const TOKUBETSU = {
+    "484-601": "img/a/7dd3657ed6.jpg"   // ホタルさんのお試し
+  };
 
   // なかまたち（野菜の4人）。コーちゃんの絵が届いたら e にファイルの場所を入れる
   const NAKAMA = [
-    { name: "みのり", img: "img/f-minori.png", e: "", cls: "c-minori",
+    { name: "みのり", img: "img/f-minori.png", e: "img/a/e593390233.jpg", cls: "c-minori",
       kotoba: "ホタル農園とつながってくれて、ありがとう。プチぷよも、また会える日を楽しみにしてるね。" },
-    { name: "ひかり", img: "img/f-hikari.png", e: "", cls: "c-hikari",
+    { name: "ひかり", img: "img/f-hikari.png", e: "img/a/9c81049127.jpg", cls: "c-hikari",
       kotoba: "ホタル農園を信じてくれて、ありがとう！ 夏のとうもろこしも、楽しみに待っててね。" },
-    { name: "いぶき", img: "img/f-ibuki.png", e: "", cls: "c-ibuki",
+    { name: "いぶき", img: "img/f-ibuki.png", e: "img/a/76e75e2c43.jpg", cls: "c-ibuki",
       kotoba: "いつも応援ありがとう！ 太陽みたいに元気いっぱい、ブロッコリーも育ててるよ！" },
-    { name: "まな",   img: "img/f-mana.png",   e: "", cls: "c-mana",
+    { name: "まな",   img: "img/f-mana.png",   e: "img/a/289b8fac6d.jpg", cls: "c-mana",
       kotoba: "ありがとう！ 梨はね、三年先の秋に実るんだ。それまで、いっしょに待っててくれる？" }
   ];
 
