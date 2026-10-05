@@ -193,40 +193,48 @@
           background: var(--surface); color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer; }
   .ov-x:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   .ov-lead, .ov-foot { margin: 0; font-size: 13px; color: var(--muted); }
-  .ov-cards { display: flex; flex-direction: column; gap: 14px; }
-  .tcard { --c: var(--accent); position: relative; border-radius: 18px; overflow: hidden;
-           background: linear-gradient(170deg, color-mix(in srgb, var(--c) 22%, var(--surface)) 0%, var(--surface) 70%);
-           border: 2px solid color-mix(in srgb, var(--c) 55%, var(--surface));
-           padding: 14px 16px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-  .tcard .ribbon { font-family: var(--font-display); font-weight: 900; font-size: 15px; letter-spacing: .2em;
-                   color: var(--surface); background: var(--c); padding: 3px 16px; border-radius: 999px; }
-  .tcard img { width: 100%; max-width: 300px; height: auto; display: block; }
-  .tcard img.koko { max-width: 100%; border-radius: 12px; }
-  .tcard .msg { position: relative; background: var(--surface); border: 1.5px solid color-mix(in srgb, var(--c) 45%, var(--line));
-                border-radius: 14px; padding: 10px 14px; font-family: var(--font-display); font-weight: 700;
-                font-size: 15.5px; line-height: 1.65; text-align: left; width: 100%; }
-  .tcard .from { align-self: flex-end; font-size: 13px; color: var(--muted); }
-  .tcard.c-nishiki { --c: var(--nishiki); }
-  .tcard.c-hime { --c: var(--hime); }
-  .tcard.c-masamune { --c: var(--masamune); }
-  .tcard.c-hitomi { --c: var(--hitomi); }
-  .tcard.c-minori { --c: var(--minori); }
-  .tcard.c-hikari { --c: var(--hikari); }
-  .tcard.c-ibuki { --c: var(--ibuki); }
-  .tcard.c-mana { --c: var(--mana); }
-  .tcard.finale { --c: var(--gold); border-width: 3px;
-                  box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 22%, transparent), 0 12px 28px rgba(0,0,0,.14); }
-  .tcard.finale .ribbon { color: var(--gold-ink); letter-spacing: .12em; }
-  .finale-head { color: var(--gold) !important; }
+  /* ひみつの贈りもの：押すたびに一枚。裏向きのカードがくるくる回って、表になる */
+  .gacha { --c: var(--accent); display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .gacha.c-nishiki { --c: var(--nishiki); }
+  .gacha.c-hime { --c: var(--hime); }
+  .gacha.c-masamune { --c: var(--masamune); }
+  .gacha.c-hitomi { --c: var(--hitomi); }
+  .gacha.c-minori { --c: var(--minori); }
+  .gacha.c-hikari { --c: var(--hikari); }
+  .gacha.c-ibuki { --c: var(--ibuki); }
+  .gacha.c-mana { --c: var(--mana); }
+  .gacha.toku { --c: var(--gold); }
+  .g-head { margin: 0; min-height: 1.6em; font-family: var(--font-display); font-weight: 900; font-size: 22px;
+            text-align: center; color: var(--c); text-wrap: balance; }
+  .flip { position: relative; width: min(100%, 320px); aspect-ratio: 4 / 5; perspective: 1200px; }
+  .flip-in { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .face { position: absolute; inset: 0; border-radius: 18px; overflow: hidden;
+          backface-visibility: hidden; -webkit-backface-visibility: hidden;
+          border: 3px solid color-mix(in srgb, var(--c) 60%, var(--surface)); }
+  .face.front { transform: rotateY(180deg); background: var(--surface); }
+  .face.front img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .face.back { display: grid; place-items: center; border-color: var(--gold);
+               background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--gold) 40%, var(--surface)) 0, var(--accent) 78%); }
+  .face.back img { width: 48%; height: auto; }
+  .face.back span { position: absolute; bottom: 9%; font-family: var(--font-display); font-weight: 900;
+                    font-size: 56px; line-height: 1; color: var(--gold); text-shadow: 0 3px 0 rgba(0,0,0,.25); }
+  .flip.done .flip-in { transform: rotateY(180deg); }
+  .gacha.toku .face.front { border-color: var(--gold);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 30%, transparent), 0 0 34px color-mix(in srgb, var(--gold) 60%, transparent); }
+  .g-card { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+  .g-msg { background: var(--surface); border: 1.5px solid color-mix(in srgb, var(--c) 45%, var(--line));
+           border-radius: 14px; padding: 10px 14px; font-family: var(--font-display); font-weight: 700;
+           font-size: 15.5px; line-height: 1.65; }
+  .g-from { align-self: flex-end; font-size: 13px; color: var(--muted); }
+  .g-again { width: 100%; }
   @media (prefers-reduced-motion: no-preference) {
-    .ov.opening .tcard, .ov.opening .nakama-head { animation: arawareru .5s both; animation-delay: calc(var(--i, 0) * 110ms + 120ms); }
-    .ov.opening .tcard.finale { animation: arawareru-toku .9s both; animation-delay: calc(var(--i, 0) * 110ms + 260ms); }
-    @keyframes arawareru { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
-    @keyframes arawareru-toku { 0% { opacity: 0; transform: scale(.94); filter: brightness(1.6); } 60% { opacity: 1; filter: brightness(1.15); } 100% { opacity: 1; transform: none; filter: none; } }
+    .flip.spin .flip-in { animation: kurukuru 1.9s cubic-bezier(.12,.6,.22,1) forwards; }
+    @keyframes kurukuru { from { transform: rotateY(0deg); } to { transform: rotateY(1980deg); } }
+    .g-card.pop { animation: pop .45s ease-out both; }
+    @keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .gacha.toku .flip.done .face.front { animation: hikaru 1.4s ease-in-out infinite alternate; }
+    @keyframes hikaru { from { filter: brightness(1); } to { filter: brightness(1.13); } }
   }
-  .nakama-head { display: flex; align-items: center; gap: 10px; font-family: var(--font-display);
-                 font-weight: 900; font-size: 15px; color: var(--accent); margin-top: 6px; }
-  .nakama-head::before, .nakama-head::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
   footer { text-align: center; font-size: 12.5px; color: var(--muted); line-height: 1.9; }
   footer a { color: var(--muted); }
@@ -311,8 +319,21 @@
         <h2 id="ov-title">あなたへの、ひみつの贈りもの</h2>
         <button class="ov-x" type="button" id="ov-x" aria-label="とじる">×</button>
       </div>
-      <p class="ov-lead">お米をご予約いただいた方だけが、ひらける贈りものです。</p>
-      <div class="ov-cards" id="ov-cards"></div>
+      <p class="ov-lead">お米をご予約いただいた方だけが、ひらける贈りものです。ひくたびに、だれかがやってきます。</p>
+      <div class="gacha" id="gacha">
+        <p class="g-head" id="g-head" aria-live="polite">くるくる…</p>
+        <div class="flip" id="flip">
+          <div class="flip-in" id="flip-in">
+            <div class="face back"><img src="img/f-onigirikko.png" alt=""><span>？</span></div>
+            <div class="face front"><img id="g-img" alt=""></div>
+          </div>
+        </div>
+        <div class="g-card" id="g-card" hidden>
+          <div class="g-msg" id="g-msg"></div>
+          <div class="g-from" id="g-from"></div>
+        </div>
+        <button class="btn-main g-again" type="button" id="g-again" hidden>もういちど ひく</button>
+      </div>
       <p class="ov-foot">ひらいた方だけの、ひみつです。まだの方には、ないしょにしてくださいね。<br>携帯によっては、絵を長押しすると保存できます。</p>
       <button class="btn-sub" type="button" id="ov-close">とじる</button>
     </div>
@@ -422,61 +443,93 @@
     return e;
   }
 
-  function openThanks() {
-    if (!current) return;
-    const box = $("ov-cards");
-    box.replaceChildren();
-    const toku = TOKUBETSU[current.code];
-    if (toku) {
-      const card = el("div", "tcard");
-      card.append(el("div", "ribbon", "ありがとう"));
-      const im = el("img", "koko"); im.src = toku; im.alt = "あなただけのイラスト"; card.append(im);
-      card.append(el("div", "msg", "いつもホタル農園を応援してくださって、ありがとうございます。"));
-      card.append(el("div", "from", "— ホタル農園と、みんなより"));
-      box.append(card);
-    }
-    const seen = [];
+  // あたったときの呼び方
+  const YOBI = { "にしき": "にしきくん", "ひめ": "ひめちゃん", "まさむね": "まさむねくん", "ひとみ": "ひとみくん",
+                 "みのり": "みのり", "ひかり": "ひかり", "いぶき": "いぶきちゃん", "まな": "まなくん" };
+  const TOKU_RITSU = 0.08;   // とくべつな一枚が出る割合（およそ12回に1回）
+  let last = null, spinning = false, pending = null;
+
+  // ひける子：予約した品種の子（出やすい）＋なかまたち
+  function pool() {
+    const p = [], seen = [];
     current.rows.forEach(([name]) => {
       const v = name.split(" ")[0];
       if (seen.includes(v) || !CHARA[v]) return;
       seen.push(v);
       const ch = CHARA[v];
-      const card = el("div", "tcard " + ch.cls);
-      card.append(el("div", "ribbon", "ありがとう"));
-      const im = el("img", ARIGATO[v] ? "koko" : null);
-      im.src = ARIGATO[v] || ch.img; im.alt = ch.name;
-      card.append(im, el("div", "msg", KOTOBA[v]), el("div", "from", "— " + ch.name + "より"));
-      box.append(card);
+      p.push({ key: ch.name, name: ch.name, cls: ch.cls, img: ARIGATO[v] || ch.img, kotoba: KOTOBA[v], w: 2 });
     });
-    box.append(el("div", "nakama-head", "なかまたちからも"));
-    NAKAMA.forEach((n) => {
-      const card = el("div", "tcard " + n.cls);
-      card.append(el("div", "ribbon", "ありがとう"));
-      const im = el("img", n.e ? "koko" : null);
-      im.src = n.e || n.img; im.alt = n.name;
-      card.append(im, el("div", "msg", n.kotoba), el("div", "from", "— " + n.name + "より"));
-      box.append(card);
-    });
-    // さいごに、とくべつな一枚
-    const fh = el("div", "nakama-head finale-head", "とくべつな一枚");
-    box.append(fh);
-    const fin = el("div", "tcard finale");
-    fin.append(el("div", "ribbon", "とくべつな一枚"));
-    const fim = el("img", "koko"); fim.src = MINNA; fim.alt = "8人とおにぎりっこ、みんなで";
-    fin.append(fim,
-      el("div", "msg", "ホタル農園のお米を選んでくださって、ほんとうにありがとうございます。みんなで、心をこめてお届けします。"),
-      el("div", "from", "— ホタル農園と、8人とおにぎりっこより"));
-    box.append(fin);
-    [...box.children].forEach((c, k) => c.style.setProperty("--i", k));
+    NAKAMA.forEach(n => p.push({ key: n.name, name: n.name, cls: n.cls, img: n.e || n.img, kotoba: n.kotoba, w: 1 }));
+    return p;
+  }
+
+  function pick() {
+    if (last !== "toku" && Math.random() < TOKU_RITSU) return { key: "toku", toku: true };
+    const p = pool().filter(c => c.key !== last);   // 同じ子が2回つづかない
+    const sum = p.reduce((t, c) => t + c.w, 0);
+    let r = Math.random() * sum;
+    for (const c of p) { r -= c.w; if (r <= 0) return c; }
+    return p[p.length - 1];
+  }
+
+  const ugokanai = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function hiku() {
+    if (spinning || !current) return;
+    spinning = true;
+    const c = pick();
+    last = c.key;
+    const g = $("gacha"), flip = $("flip"), fin = $("flip-in"), img = $("g-img");
+    g.className = "gacha";
+    $("g-card").hidden = true;
+    $("g-again").hidden = true;
+    $("g-head").textContent = "くるくる…";
+    flip.classList.remove("spin", "done");
+    void fin.offsetWidth;
+    if (c.toku) { img.src = TOKUBETSU[current.code] || MINNA; img.alt = "8人とおにぎりっこ、みんなで"; }
+    else { img.src = c.img; img.alt = c.name; }
+
+    pending = () => {
+      flip.classList.remove("spin");
+      flip.classList.add("done");
+      if (c.toku) {
+        g.classList.add("toku");
+        $("g-head").textContent = "とくべつな一枚が 引けた！";
+        $("g-msg").textContent = "ホタル農園のお米を選んでくださって、ほんとうにありがとうございます。みんなで、心をこめてお届けします。";
+        $("g-from").textContent = "— ホタル農園と、8人とおにぎりっこより";
+      } else {
+        g.classList.add(c.cls);
+        $("g-head").textContent = (YOBI[c.name] || c.name) + "が あたった！";
+        $("g-msg").textContent = c.kotoba;
+        $("g-from").textContent = "— " + c.name + "より";
+      }
+      const card = $("g-card");
+      card.hidden = false;
+      card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop");
+      $("g-again").hidden = false;
+      spinning = false;
+    };
+    if (ugokanai()) { const f = pending; pending = null; f(); return; }
+    flip.classList.add("spin");
+  }
+
+  function openThanks() {
+    if (!current) return;
+    pool().forEach(c => { const i = new Image(); i.src = c.img; });
+    const t = new Image(); t.src = TOKUBETSU[current.code] || MINNA;
+    last = null;
     opener = document.activeElement;
-    $("ov").classList.remove("opening"); void $("ov").offsetWidth; $("ov").classList.add("opening");
     $("ov").hidden = false;
     document.body.style.overflow = "hidden";
     $("ov").scrollTop = 0;
     $("ov-x").focus();
+    hiku();
   }
 
   function closeThanks() {
+    pending = null;
+    spinning = false;
+    $("flip").classList.remove("spin");
     $("ov").hidden = true;
     document.body.style.overflow = "";
     $("bubble").textContent = "贈りもののことは、ないしょだよ！";
@@ -555,6 +608,8 @@
   });
 
   $("thanks-open").addEventListener("click", openThanks);
+  $("g-again").addEventListener("click", hiku);
+  $("flip-in").addEventListener("animationend", () => { const f = pending; pending = null; if (f) f(); });
   $("ov-x").addEventListener("click", closeThanks);
   $("ov-close").addEventListener("click", closeThanks);
   $("ov").addEventListener("click", (e) => { if (e.target === $("ov")) closeThanks(); });
