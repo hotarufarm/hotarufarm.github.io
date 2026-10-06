@@ -118,7 +118,14 @@
           border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: 999px; }
   .kagi:focus-visible { outline: 3px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 6px var(--gold); }
   .kagi-hint { margin: -6px 0 0; font-size: 13.5px; color: var(--muted); text-align: center; }
-  .card-save { max-width: 300px; }
+  .card-save { max-width: 320px; }
+  .save.busy { opacity: .6; pointer-events: none; }
+  .lb-tip { width: 100%; max-width: 560px; margin: 0; text-align: center; font-size: 13.5px; color: #fff; line-height: 1.6; }
+  .zip .sub2 { font-size: 13px; color: var(--muted); }
+  .zip .sub2 a { color: var(--accent); font-weight: 700; }
+  .all-msg { margin: 0; font-size: 14px; font-weight: 700; color: var(--accent); }
+  .zip-btn.busy { opacity: .7; pointer-events: none; }
+  button.zip-btn { border: 0; cursor: pointer; }
   @media (prefers-reduced-motion: no-preference) {
     .kagi { animation: yobu 2.2s ease-in-out infinite; }
     @keyframes yobu { 0%,100% { box-shadow: 0 0 0 0 rgba(255,236,170,0); } 50% { box-shadow: 0 0 0 5px rgba(255,236,170,.75); } }
@@ -175,15 +182,21 @@
 
   <section class="howto" aria-label="受け取り方">
     <h2>受け取り方</h2>
-    <ol>
+    <ol id="howto-keitai">
+      <li><b class="n">1</b><span>好きな画像を<b>押す</b>（大きくなります）</span></li>
+      <li><b class="n">2</b><span><b>「写真に保存する」</b>を押す</span></li>
+      <li><b class="n">3</b><span id="howto-3">出てきたメニューで<b>「画像を保存」</b>を押す。<br>写真アプリに入ります。</span></li>
+    </ol>
+    <ol id="howto-pc" hidden>
       <li><b class="n">1</b><span>画像を押すと、<b>大きく見られます。</b></span></li>
       <li><b class="n">2</b><span>画像の下の<b>「画像を保存する」</b>で、1枚ずつ受け取れます。</span></li>
-      <li><b class="n">3</b><span>まとめてほしい方は、22枚のあとの<b>「22枚をまとめて受け取る」</b>へ。パソコンの方におすすめです。</span></li>
+      <li><b class="n">3</b><span>まとめてほしい方は、22枚のあとの<b>「22枚をまとめて受け取る」</b>が便利です。</span></li>
     </ol>
+    <p id="howto-all" style="margin:12px 0 0;font-size:14px">22枚ぜんぶほしい方は、22枚のあとの<b>「22枚まとめて写真に保存する」</b>で一度に入ります。</p>
     <details>
-      <summary>携帯の「写真」に入れたいとき</summary>
-      <p><b>iPhone</b>：画像を大きく見て、<b>画像を長押し</b> →「<b>"写真"に保存</b>」</p>
-      <p><b>Android</b>：画像を大きく見て、<b>画像を長押し</b> →「<b>画像をダウンロード</b>」</p>
+      <summary>うまく保存できないとき</summary>
+      <p>画像を大きく見て、<b>画像を長押し</b>してください。</p>
+      <p><b>iPhone</b>：「<b>"写真"に保存</b>」　<b>Android</b>：「<b>画像をダウンロード</b>」</p>
       <p>LINEのトークやSNSで、気軽にお楽しみください。</p>
     </details>
   </section>
@@ -193,11 +206,18 @@
   <div class="grid" id="grid"></div>
 
   <section class="zip" aria-label="まとめて受け取る">
+    <button class="zip-btn" id="all" type="button" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+      <span id="all-t">22枚まとめて写真に保存する</span>
+    </button>
+    <p class="all-msg" id="all-msg" hidden></p>
+    <p id="all-note" hidden>22枚で約31MBあります。Wi-Fiのときがおすすめです。</p>
     <a class="zip-btn" id="zip" href="set.zip" download="ホタル農園_2026先行予約者限定セット.zip">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
       22枚をまとめて受け取る
     </a>
-    <p>22枚と「最初の仲間のしるし」、画像一覧が入ったZIPファイルです（約34MB）。<br>パソコンにおすすめです。携帯では「ファイル」アプリで開けます。</p>
+    <p id="zip-note">22枚と「最初の仲間のしるし」、画像一覧が入ったZIPファイルです（約34MB）。<br>パソコンにおすすめです。</p>
+    <p class="sub2" id="zip-sub" hidden>パソコンの方は、<a href="set.zip" download="ホタル農園_2026先行予約者限定セット.zip">ZIPファイル（約34MB）</a>でもまとめて受け取れます。</p>
   </section>
 
   <section class="more" id="more" aria-label="もうひとつの贈りもの">
@@ -230,6 +250,7 @@
   </div>
   <p class="lb-press" id="lb-press" hidden>この画像を<b>長押し</b>して「"写真"に保存」を選んでください</p>
   <a class="save" id="lb-save" href="#" download>この画像を保存する</a>
+  <p class="lb-tip" id="lb-tip" hidden></p>
 </div>
 
 <!-- カギのことば -->
@@ -247,13 +268,46 @@
   // ホタル農園ゲームができたら、URカード交換の画面の住所をここに入れる。空のあいだは、ことばを出す。
   // 「仲間のしるし」は、使っても消えない永久の鍵。URカードと交換したあとも、ずっと持ったまま。
   const GAME_URL = "";
-  // 保存のしかた。"download"＝ふつうに保存。"press"＝大きく見せて長押しを案内（保存ができない場所での確認用）
+  // "download"＝ふつうに保存。"press"＝保存ができない場所（お試しページ）
   const SAVE_MODE = "download";
 
   const $ = (id) => document.getElementById(id);
   const no = (i) => String(i).padStart(2, "0");
-  const isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const ua = navigator.userAgent;
+  const isIOS = /iP(hone|ad|od)/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+  const KEITAI = isIOS || isAndroid;
+  const OTAMESHI = SAVE_MODE === "press";
+  // iPhone：共有メニューに画像を渡すと「画像を保存」で写真アプリに入る
+  const SHARE = !OTAMESHI && isIOS && (() => {
+    try { const f = new File([new Blob(["x"], { type: "image/png" })], "t.png", { type: "image/png" });
+          return !!(navigator.canShare && navigator.canShare({ files: [f] })); } catch (e) { return false; }
+  })();
+  const LABEL = KEITAI || OTAMESHI ? "写真に保存する" : "画像を保存する";
   const ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>';
+  const fname = (i) => "ホタル農園_にしき君_" + no(i) + ".png";
+  const OTAMESHI_KOTOBA = "このお試しページでは保存できません。ホームページに出したあとは、携帯で「写真に保存する」を押すと、写真アプリに入ります。";
+
+  // ── 受け取り方を、携帯とパソコンで切りかえ ──
+  const keitaiView = KEITAI || OTAMESHI;
+  $("howto-keitai").hidden = !keitaiView;
+  $("howto-pc").hidden = keitaiView;
+  $("howto-all").hidden = !keitaiView;
+  if (isAndroid) $("howto-3").innerHTML = "そのまま保存されます。<br>写真（ギャラリー）アプリの<b>「ダウンロード」</b>に入ります。";
+
+  // ── 元の画像を先に読み込んでおく（iPhoneの共有メニューに渡すため） ──
+  const cache = new Map();
+  function yoi(path, name) {
+    if (cache.has(path)) return cache.get(path);
+    const pr = fetch(path).then((r) => { if (!r.ok) throw new Error("x"); return r.blob(); })
+                          .then((b) => new File([b], name, { type: b.type || "image/png" }));
+    pr.catch(() => cache.delete(path));
+    cache.set(path, pr);
+    return pr;
+  }
+  function watasu(files) {   // iPhoneの共有メニューを出す
+    return navigator.share({ files: files });
+  }
 
   // ── 22枚をならべる ──
   const grid = $("grid");
@@ -264,24 +318,45 @@
       '<button class="pic" type="button" data-i="' + i + '" aria-label="' + i + '枚目を大きく見る">' +
         '<img src="t/' + no(i) + '.webp" alt="にしき君の限定画像 ' + i + '枚目" loading="' + (i <= 6 ? "eager" : "lazy") + '">' +
         '<span class="no">' + no(i) + '</span></button>' +
-      '<a class="save" data-save="' + i + '" href="o/' + no(i) + '.png" download="ホタル農園_にしき君_' + no(i) + '.png">' + ICON + '画像を保存する</a>';
+      '<a class="save" data-save="' + i + '" href="o/' + no(i) + '.png" download="' + fname(i) + '">' + ICON + LABEL + '</a>';
     grid.append(t);
   }
 
   // ── 大きく見る ──
-  let ima = 1, opener = null;
-  function miseru(i, press) {
+  let ima = 1, opener = null, imaFile = null;
+  function saveJotai(text, busy) {
+    const b = $("lb-save");
+    b.innerHTML = ICON + text;
+    b.classList.toggle("busy", busy);
+    b.setAttribute("aria-disabled", busy ? "true" : "false");
+  }
+  function miseru(i) {
     ima = ((i - 1 + MAISU) % MAISU) + 1;
     $("lb-img").src = "l/" + no(ima) + ".webp";
     $("lb-img").alt = "にしき君の限定画像 " + ima + "枚目";
     $("lb-no").textContent = ima + " / " + MAISU;
     $("lb-save").href = "o/" + no(ima) + ".png";
-    $("lb-save").setAttribute("download", "ホタル農園_にしき君_" + no(ima) + ".png");
-    $("lb-press").hidden = !press;
+    $("lb-save").setAttribute("download", fname(ima));
+    $("lb-press").hidden = true;
+    const tip = $("lb-tip");
+    if (SHARE) {
+      imaFile = null;
+      const me = ima;
+      saveJotai("じゅんび中…", true);
+      tip.textContent = "「写真に保存する」を押して、出てきたメニューで「画像を保存」を押してください。";
+      tip.hidden = false;
+      yoi("o/" + no(me) + ".png", fname(me))
+        .then((f) => { if (ima === me) { imaFile = f; saveJotai(LABEL, false); } })
+        .catch(() => { if (ima === me) saveJotai(LABEL, false); });
+    } else {
+      saveJotai(LABEL, false);
+      tip.hidden = !isAndroid;
+      if (isAndroid) tip.textContent = "保存した画像は、写真（ギャラリー）アプリの「ダウンロード」に入ります。";
+    }
   }
-  function hiraku(i, press) {
+  function hiraku(i) {
     opener = document.activeElement;
-    miseru(i, press);
+    miseru(i);
     $("lb").hidden = false;
     document.body.style.overflow = "hidden";
     $("lb-x").focus();
@@ -291,36 +366,110 @@
     document.body.style.overflow = "";
     if (opener && opener.focus) opener.focus();
   }
-  // 長押しで保存してもらうほうがよいとき（iPhone、または保存できない場所）
-  const nagaoshi = () => SAVE_MODE === "press" || isIOS;
 
   grid.addEventListener("click", (e) => {
     const pic = e.target.closest(".pic");
-    if (pic) { hiraku(Number(pic.dataset.i), false); return; }
+    if (pic) { hiraku(Number(pic.dataset.i)); return; }
     const sv = e.target.closest("[data-save]");
-    if (sv && nagaoshi()) { e.preventDefault(); hiraku(Number(sv.dataset.save), true); }
+    // iPhone・お試しでは、まず大きく見せて、そこで保存してもらう
+    if (sv && (SHARE || isIOS || OTAMESHI)) { e.preventDefault(); hiraku(Number(sv.dataset.save)); }
   });
-  $("lb-save").addEventListener("click", (e) => { if (nagaoshi()) { e.preventDefault(); $("lb-press").hidden = false; } });
+
+  $("lb-save").addEventListener("click", (e) => {
+    if (OTAMESHI) { e.preventDefault(); kotobaBox(OTAMESHI_KOTOBA); return; }
+    if (SHARE) {
+      e.preventDefault();
+      if (!imaFile) return;
+      watasu([imaFile]).catch((err) => { if (!err || err.name !== "AbortError") $("lb-press").hidden = false; });
+      return;
+    }
+    if (isIOS) { e.preventDefault(); $("lb-press").hidden = false; }   // 共有メニューが使えないiPhoneは長押し
+  });
   $("lb-x").addEventListener("click", tojiru);
-  $("lb-mae").addEventListener("click", () => miseru(ima - 1, !$("lb-press").hidden));
-  $("lb-tsugi").addEventListener("click", () => miseru(ima + 1, !$("lb-press").hidden));
+  $("lb-mae").addEventListener("click", () => miseru(ima - 1));
+  $("lb-tsugi").addEventListener("click", () => miseru(ima + 1));
   $("lb").addEventListener("click", (e) => { if (e.target === $("lb")) tojiru(); });
   let sx = null;
   $("lb-img").addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; }, { passive: true });
   $("lb-img").addEventListener("touchend", (e) => {
     if (sx === null) return;
     const dx = e.changedTouches[0].clientX - sx; sx = null;
-    if (Math.abs(dx) > 50) miseru(ima + (dx < 0 ? 1 : -1), !$("lb-press").hidden);
+    if (Math.abs(dx) > 50) miseru(ima + (dx < 0 ? 1 : -1));
   });
 
-  // ── まとめて／カードの保存（保存できない場所では案内） ──
-  if (SAVE_MODE === "press") {
-    $("zip").addEventListener("click", (e) => { e.preventDefault(); alertBox("ZIPは、ホームページに出したあとで受け取れます。"); });
-    $("card-save").addEventListener("click", (e) => { e.preventDefault(); alertBox("カードは、ホームページに出したあとで保存できます。"); });
+  // ── 22枚まとめて ──
+  if (SHARE || isAndroid || OTAMESHI) {
+    $("all").hidden = false;
+    $("all-note").hidden = false;
+    $("zip").hidden = true;
+    $("zip-note").hidden = true;
+    $("zip-sub").hidden = false;
   }
+  let allFiles = null, allBusy = false;
+  const allMsg = (t) => { $("all-msg").textContent = t; $("all-msg").hidden = !t; };
+  $("all").addEventListener("click", async () => {
+    if (OTAMESHI) { kotobaBox(OTAMESHI_KOTOBA); return; }
+    if (allBusy) return;
+    if (SHARE) {
+      if (allFiles) {   // 用意ができていたら、共有メニューへ
+        watasu(allFiles)
+          .then(() => allMsg("写真アプリを開いてみてください。22枚入っています。"))
+          .catch((err) => { if (!err || err.name !== "AbortError") allMsg("うまくいかないときは、1枚ずつ保存してください。"); });
+        return;
+      }
+      allBusy = true;
+      $("all").classList.add("busy");
+      let done = 0;
+      allMsg("じゅんび中… 0 / 22");
+      try {
+        const list = [];
+        for (let i = 1; i <= MAISU; i++) {
+          list.push(await yoi("o/" + no(i) + ".png", fname(i)));
+          done++; allMsg("じゅんび中… " + done + " / 22");
+        }
+        allFiles = list;
+        $("all-t").textContent = "22枚を写真に保存する";
+        allMsg("じゅんびができました。もう一度押して、出てきたメニューで「" + MAISU + "枚の画像を保存」を押してください。");
+      } catch (err) {
+        allMsg("読み込みがとちゅうで止まりました。電波のよいところで、もう一度押してください。");
+      }
+      $("all").classList.remove("busy");
+      allBusy = false;
+      return;
+    }
+    if (isAndroid) {   // Androidは1枚ずつ続けて保存
+      allBusy = true;
+      $("all").classList.add("busy");
+      allMsg("保存をはじめます。「複数のファイルのダウンロード」をたずねられたら「許可」を押してください。");
+      for (let i = 1; i <= MAISU; i++) {
+        const a = document.createElement("a");
+        a.href = "o/" + no(i) + ".png"; a.download = fname(i);
+        document.body.append(a); a.click(); a.remove();
+        await new Promise((r) => setTimeout(r, 450));
+      }
+      allMsg("22枚の保存が終わりました。写真（ギャラリー）アプリの「ダウンロード」を見てみてください。");
+      $("all").classList.remove("busy");
+      allBusy = false;
+    }
+  });
+  if (OTAMESHI) $("zip").addEventListener("click", (e) => { e.preventDefault(); kotobaBox(OTAMESHI_KOTOBA); });
+
+  // ── 仲間のしるしの保存 ──
+  $("card-save").innerHTML = ICON + (KEITAI || OTAMESHI ? "このカードを写真に保存する" : "このカードを保存する");
+  let cardFile = null;
+  $("card-save").addEventListener("click", (e) => {
+    if (OTAMESHI) { e.preventDefault(); kotobaBox(OTAMESHI_KOTOBA); return; }
+    if (SHARE) {
+      e.preventDefault();
+      const go = (f) => watasu([f]).catch(() => {});
+      if (cardFile) go(cardFile);
+      else yoi("shirushi_no001.png", "ホタル農園_最初の仲間のしるし_No001.png").then((f) => { cardFile = f; kotobaBox("じゅんびができました。もう一度「このカードを写真に保存する」を押してください。"); });
+    }
+  });
 
   // ── カギを使う ──
   let kOpener = null;
+  const KOTOBA0 = $("kdlg-t").innerHTML;
   function kagiNoKotoba() {
     kOpener = document.activeElement;
     $("kdlg").hidden = false;
@@ -329,14 +478,14 @@
   }
   function kagiTojiru() {
     $("kdlg").hidden = true;
-    document.body.style.overflow = "";
+    document.body.style.overflow = $("lb").hidden ? "" : "hidden";
     if (kOpener && kOpener.focus) kOpener.focus();
   }
-  function alertBox(t) { $("kdlg-t").textContent = t; kagiNoKotoba(); }
-  const KOTOBA0 = $("kdlg-t").innerHTML;
+  function kotobaBox(t) { $("kdlg-t").textContent = t; $("kdlg-ok").textContent = "わかった"; kagiNoKotoba(); }
   $("kagi").addEventListener("click", () => {
     if (GAME_URL) { location.href = GAME_URL; return; }   // 鍵は使っても消えない
     $("kdlg-t").innerHTML = KOTOBA0;
+    $("kdlg-ok").textContent = "大切に持っておく";
     kagiNoKotoba();
   });
   $("kdlg-ok").addEventListener("click", kagiTojiru);
@@ -346,14 +495,19 @@
     if (!$("kdlg").hidden && e.key === "Escape") { kagiTojiru(); return; }
     if ($("lb").hidden) return;
     if (e.key === "Escape") tojiru();
-    if (e.key === "ArrowLeft") miseru(ima - 1, !$("lb-press").hidden);
-    if (e.key === "ArrowRight") miseru(ima + 1, !$("lb-press").hidden);
+    if (e.key === "ArrowLeft") miseru(ima - 1);
+    if (e.key === "ArrowRight") miseru(ima + 1);
   });
 
-  // ── もうひとつ：仲間のしるしが見えたら、光がすっと通る ──
+  // ── 仲間のしるしが見えたら、光がすっと通る。iPhoneでは保存の用意もしておく ──
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((ents) => {
-      ents.forEach((en) => { if (en.isIntersecting) { $("shirushi").classList.add("hikari"); io.disconnect(); } });
+      ents.forEach((en) => {
+        if (!en.isIntersecting) return;
+        $("shirushi").classList.add("hikari");
+        if (SHARE && !cardFile) yoi("shirushi_no001.png", "ホタル農園_最初の仲間のしるし_No001.png").then((f) => { cardFile = f; }).catch(() => {});
+        io.disconnect();
+      });
     }, { threshold: 0.45 });
     io.observe($("shirushi"));
   }
