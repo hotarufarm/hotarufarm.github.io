@@ -116,7 +116,9 @@
                      transform: translateX(-120%); }
   .kagi { position: absolute; left: 10.29%; top: 84.10%; width: 30.01%; height: 11.49%;
           border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: 999px; }
+  .kagi::before { content: ""; position: absolute; inset: -12px -10px; }   /* 指で押しやすいよう、押せる範囲を広げる */
   .kagi:focus-visible { outline: 3px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 6px var(--gold); }
+  .kagi-btn { max-width: 320px; }
   .kagi-hint { margin: -6px 0 0; font-size: 13.5px; color: var(--muted); text-align: center; }
   .card-save { max-width: 320px; }
   .save.busy { opacity: .6; pointer-events: none; }
@@ -226,7 +228,8 @@
       <img src="card.webp" alt="最初の仲間のしるし No.001。あなたは、ホタル農園の「最初の仲間」です。">
       <button class="kagi" id="kagi" type="button" aria-label="カギを使う"></button>
     </div>
-    <p class="kagi-hint">カードの「カギを使う」を、押してみてください。</p>
+    <button class="zip-btn kagi-btn" id="kagi2" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 20 3"/><path d="M16 7l3 3"/><path d="M18 5l2 2"/></svg>カギを使う</button>
+    <p class="kagi-hint">カードの中の「カギを使う」でも押せます。</p>
     <a class="save card-save" id="card-save" href="shirushi_kagi_no001.png" download="ホタル農園_最初の仲間のしるし_No001.png">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
       このカードを保存する
@@ -482,12 +485,14 @@
     if (kOpener && kOpener.focus) kOpener.focus();
   }
   function kotobaBox(t) { $("kdlg-t").textContent = t; $("kdlg-ok").textContent = "わかった"; kagiNoKotoba(); }
-  $("kagi").addEventListener("click", () => {
+  const kagiWoTsukau = () => {
     if (GAME_URL) { location.href = GAME_URL; return; }   // 鍵は使っても消えない
     $("kdlg-t").innerHTML = KOTOBA0;
     $("kdlg-ok").textContent = "大切に持っておく";
     kagiNoKotoba();
-  });
+  };
+  $("kagi").addEventListener("click", kagiWoTsukau);
+  $("kagi2").addEventListener("click", kagiWoTsukau);
   $("kdlg-ok").addEventListener("click", kagiTojiru);
   $("kdlg").addEventListener("click", (e) => { if (e.target === $("kdlg")) kagiTojiru(); });
 
