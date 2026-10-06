@@ -47,6 +47,7 @@
     background: linear-gradient(180deg, var(--sky) 0, var(--paddy) 420px) var(--paddy);
     color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.8;
     padding-inline: 16px; padding-block: 26px 48px; -webkit-text-size-adjust: 100%;
+    word-break: keep-all; overflow-wrap: anywhere;   /* ことばの切れ目（<wbr>）でだけ折り返す */
   }
   .col { max-width: 760px; margin-inline: auto; display: flex; flex-direction: column; gap: 22px; }
 
@@ -119,9 +120,11 @@
   .kagi::before { content: ""; position: absolute; inset: -12px -10px; }   /* 指で押しやすいよう、押せる範囲を広げる */
   .kagi:focus-visible { outline: 3px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 6px var(--gold); }
   .kagi-btn { max-width: 320px; }
-  .kagi-hint { margin: -6px 0 0; font-size: 13.5px; color: var(--muted); text-align: center; }
+  .kagi-hint { margin: -6px 0 0; font-size: 13.5px; color: var(--muted); text-align: center; word-break: keep-all; overflow-wrap: anywhere; }
   .card-save { max-width: 320px; }
-  .keep { margin: 4px 0 0; text-align: center; font-size: 15px; line-height: 1.85; font-weight: 700; }
+  .ku { display: inline-block; }   /* ひとかたまりで折り返す */
+  .keep { margin: 4px 0 0; text-align: center; font-size: 15px; line-height: 1.85; font-weight: 700;
+          word-break: keep-all; overflow-wrap: anywhere; }
   .save.busy { opacity: .6; pointer-events: none; }
   .lb-tip { width: 100%; max-width: 560px; margin: 0; text-align: center; font-size: 13.5px; color: #fff; line-height: 1.6; }
   .zip .sub2 { font-size: 13px; color: var(--muted); }
@@ -173,76 +176,76 @@
 <div class="col">
   <header>
     <div class="farm">ホタル農園</div>
-    <h1>先行予約の特典</h1>
+    <h1>先行予約の<wbr>特典</h1>
     <div class="tag">2026年　先行予約者限定</div>
   </header>
 
   <section class="letter" aria-label="ごあいさつ">
-    <p class="first">ホタル農園のお米を<br>先行予約して<wbr>くださった<wbr>皆さまへ</p>
-    <p>このたびは、<wbr>ホタル農園の<wbr>お米を<wbr>選んでいただき、<br>本当に<wbr>ありがとう<wbr>ございます。</p>
-    <p>あなたと<wbr>一緒に<wbr>育てた実りを、<wbr>お届けします。<br>感謝を込めて、<wbr>にしき君の<wbr>限定画像を<wbr>お贈りします。</p>
+    <p class="first">ホタル農園の<wbr>お米を<br>先行予約して<wbr>くださった<wbr>皆さまへ</p>
+    <p>この<wbr>たびは、<wbr>ホタル農園の<wbr>お米を<wbr>選んでいただき、<br>本当に<wbr>ありがとう<wbr>ございます。</p>
+    <p>あなたと<wbr>一緒に<wbr>育てた<wbr>実りを、<wbr>お届けします。<br>感謝を<wbr>込めて、<wbr>に<wbr>しき君の<wbr>限定画像を<wbr>お贈りします。</p>
   </section>
 
   <section class="howto" aria-label="受け取り方">
     <h2>受け取り方</h2>
     <ol id="howto-keitai">
-      <li><b class="n">1</b><span>好きな画像を<b>押す</b>（大きくなります）</span></li>
-      <li><b class="n">2</b><span><b>「写真に保存する」</b>を押す</span></li>
-      <li><b class="n">3</b><span id="howto-3">出てきたメニューで<b>「画像を保存」</b>を押す。<br>写真アプリに入ります。</span></li>
+      <li><b class="n">1</b><span>好きな<wbr>画像を<b>押す</b><span class="ku">（<wbr>大きくなります）</span></span></li>
+      <li><b class="n">2</b><span><b>「写真に<wbr>保存する」</b>を<wbr>押す</span></li>
+      <li><b class="n">3</b><span id="howto-3">出てきた<wbr>メニューで<b>「画像を<wbr>保存」</b>を<wbr>押す。<br>写真アプリに<wbr>入ります。</span></li>
     </ol>
     <ol id="howto-pc" hidden>
-      <li><b class="n">1</b><span>画像を押すと、<b>大きく見られます。</b></span></li>
-      <li><b class="n">2</b><span>画像の下の<b>「画像を保存する」</b>で、1枚ずつ受け取れます。</span></li>
-      <li><b class="n">3</b><span>まとめてほしい方は、22枚のあとの<b>「22枚をまとめて受け取る」</b>が便利です。</span></li>
+      <li><b class="n">1</b><span>画像を<wbr>押すと、<b>大きく<wbr>見られます。</b></span></li>
+      <li><b class="n">2</b><span>画像の<wbr>下の<b>「画像を<wbr>保存する」</b>で、<wbr>1枚ずつ<wbr>受け取れます。</span></li>
+      <li><b class="n">3</b><span>まとめて<wbr>ほしい<wbr>方は、<wbr>22枚の<wbr>あとの<b>「22枚を<wbr>まとめて<wbr>受け取る」</b>が<wbr>便利です。</span></li>
     </ol>
-    <p id="howto-all" style="margin:12px 0 0;font-size:14px">22枚ぜんぶほしい方は、22枚のあとの<b>「22枚まとめて写真に保存する」</b>で一度に入ります。</p>
+    <p id="howto-all" style="margin:12px 0 0;font-size:14px">22枚ぜんぶほしい<wbr>方は、<wbr>22枚の<wbr>あとの<b>「22枚まとめて<wbr>写真に<wbr>保存する」</b>で<wbr>一度に<wbr>入ります。</p>
     <details>
-      <summary>うまく保存できないとき</summary>
-      <p>画像を大きく見て、<b>画像を長押し</b>してください。</p>
-      <p><b>iPhone</b>：「<b>"写真"に保存</b>」　<b>Android</b>：「<b>画像をダウンロード</b>」</p>
-      <p>LINEのトークやSNSで、気軽にお楽しみください。</p>
+      <summary>うまく<wbr>保存できない<wbr>とき</summary>
+      <p>画像を<wbr>大きく<wbr>見て、<b>画像を<wbr>長押し</b>してください。</p>
+      <p><b>iPhone</b>：「<b>"写真"に<wbr>保存</b>」　<b>Android</b>：「<b>画像を<wbr>ダウンロード</b>」</p>
+      <p>LINEの<wbr>トークや<wbr>SNSで、<wbr>気軽に<wbr>お楽しみください。</p>
     </details>
   </section>
 
-  <h2 class="sec">にしき君の限定画像　22枚</h2>
-  <p class="sub">畑から食卓まで</p>
+  <h2 class="sec">に<wbr>しき君の<wbr>限定画像　22枚</h2>
+  <p class="sub">畑から<wbr>食卓まで</p>
   <div class="grid" id="grid"></div>
 
   <section class="zip" aria-label="まとめて受け取る">
     <button class="zip-btn" id="all" type="button" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
-      <span id="all-t">22枚まとめて写真に保存する</span>
+      <span id="all-t">22枚まとめて<wbr>写真に<wbr>保存する</span>
     </button>
     <p class="all-msg" id="all-msg" hidden></p>
-    <p id="all-note" hidden>22枚で約31MBあります。Wi-Fiのときがおすすめです。</p>
+    <p id="all-note" hidden>22枚で<wbr>約31MBあります。<wbr>Wi-Fiの<wbr>ときが<wbr>おすすめです。</p>
     <a class="zip-btn" id="zip" href="set-k.zip" download="ホタル農園_2026先行予約者限定セット.zip">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
-      22枚をまとめて受け取る
+      22枚を<wbr>まとめて<wbr>受け取る<wbr>
     </a>
-    <p id="zip-note">22枚と「最初の仲間のしるし」、画像一覧が入ったZIPファイルです（約34MB）。<br>パソコンにおすすめです。</p>
-    <p class="sub2" id="zip-sub" hidden>パソコンの方は、<a href="set-k.zip" download="ホタル農園_2026先行予約者限定セット.zip">ZIPファイル（約34MB）</a>でもまとめて受け取れます。</p>
+    <p id="zip-note">22枚と<wbr>「最初の<wbr>仲間の<wbr>しるし」、<wbr>画像一覧が<wbr>入った<wbr>ZIPファイルです<wbr>（約34MB）。<br>パソコンに<wbr>おすすめです。</p>
+    <p class="sub2" id="zip-sub" hidden>パソコンの<wbr>方は、<a href="set-k.zip" download="ホタル農園_2026先行予約者限定セット.zip">ZIPファイル<wbr>（約34MB）</a>でも<wbr>まとめて<wbr>受け取れます。</p>
   </section>
 
   <section class="more" id="more" aria-label="もうひとつの贈りもの">
-    <h2>そして、もうひとつ。<br>あなたへ<wbr>お渡ししたい<wbr>ものが<wbr>あります。</h2>
+    <h2>そして、<wbr>もう<wbr>ひとつ。<br>あなたへ<wbr>お渡ししたい<wbr>ものが<wbr>あります。</h2>
     <div class="shirushi" id="shirushi">
       <img src="card.webp" alt="最初の仲間のしるし No.001。あなたは、ホタル農園の「最初の仲間」です。">
       <button class="kagi" id="kagi" type="button" aria-label="カギを使う"></button>
     </div>
-    <button class="zip-btn kagi-btn" id="kagi2" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 20 3"/><path d="M16 7l3 3"/><path d="M18 5l2 2"/></svg>カギを使う</button>
-    <p class="kagi-hint">カードの中の「カギを使う」でも押せます。</p>
+    <button class="zip-btn kagi-btn" id="kagi2" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 20 3"/><path d="M16 7l3 3"/><path d="M18 5l2 2"/></svg>カギを<wbr>使う</button>
+    <p class="kagi-hint">カードの<wbr>中の<wbr>「カギを<wbr>使う」でも<wbr>押せます。</p>
     <a class="save card-save" id="card-save" href="shirushi_kagi_no001.png" download="ホタル農園_最初の仲間のしるし_No001.png">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
-      このカードを保存する
+      この<wbr>カードを<wbr>保存する<wbr>
     </a>
 
-    <p class="keep">このカードを写真に保存して、<wbr>大切に持っていてください。<br>カギを使える日が来たら、<wbr>ホタル農園から<wbr>お知らせします。</p>
+    <p class="keep"><span class="ku">この<wbr>カードを<wbr>写真に<wbr>保存して、</span><span class="ku">大切に<wbr>持っていてください。</span><br><span class="ku">カギを<wbr>使える<wbr>日が<wbr>来たら、</span><span class="ku">ホタル農園から</span><span class="ku">お知らせします。</span></p>
   </section>
 
   <footer>
     ホタル農園　<a href="https://hotarufarm.github.io/" target="_blank" rel="noopener">ホームページ</a><br>
-    このページは、先行予約の方だけのページです。<br>
-    ページの住所は、仲間の中だけでお楽しみください。
+    この<wbr>ページは、<wbr>先行予約の<wbr>方だけの<wbr>ページです。<br>
+    ページの<wbr>住所は、<wbr>仲間の<wbr>中だけで<wbr>お楽しみください。<wbr>
   </footer>
 </div>
 
@@ -254,8 +257,8 @@
     <button class="lb-nav mae" id="lb-mae" type="button" aria-label="前の画像">‹</button>
     <button class="lb-nav tsugi" id="lb-tsugi" type="button" aria-label="次の画像">›</button>
   </div>
-  <p class="lb-press" id="lb-press" hidden>この画像を<b>長押し</b>して「"写真"に保存」を選んでください</p>
-  <a class="save" id="lb-save" href="#" download>この画像を保存する</a>
+  <p class="lb-press" id="lb-press" hidden>この<wbr>画像を<b>長押し</b>して<wbr>「"写真"に<wbr>保存」を<wbr>選んでください</p>
+  <a class="save" id="lb-save" href="#" download>この<wbr>画像を<wbr>保存する</a>
   <p class="lb-tip" id="lb-tip" hidden></p>
 </div>
 
@@ -263,8 +266,8 @@
 <div class="kdlg" id="kdlg" hidden role="dialog" aria-modal="true" aria-labelledby="kdlg-t">
   <div class="kdlg-box">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="12" r="4"/><path d="M11.5 12H21"/><path d="M17 12v3"/><path d="M20 12v2"/></svg>
-    <p id="kdlg-t">鍵は、まだ静かに眠っています。<br>物語が始まる日まで、<br>大切に持っていてね。</p>
-    <button type="button" id="kdlg-ok">大切に持っておく</button>
+    <p id="kdlg-t">鍵は、<wbr>まだ<wbr>静かに<wbr>眠っています。<br>物語が<wbr>始まる<wbr>日まで、<br>大切に<wbr>持っていてね。</p>
+    <button type="button" id="kdlg-ok">大切に<wbr>持っておく</button>
   </div>
 </div>
 
