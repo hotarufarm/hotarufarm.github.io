@@ -212,12 +212,12 @@
     </button>
     <p class="all-msg" id="all-msg" hidden></p>
     <p id="all-note" hidden>22枚で約31MBあります。Wi-Fiのときがおすすめです。</p>
-    <a class="zip-btn" id="zip" href="set.zip" download="ホタル農園_2026先行予約者限定セット.zip">
+    <a class="zip-btn" id="zip" href="set-k.zip" download="ホタル農園_2026先行予約者限定セット.zip">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
       22枚をまとめて受け取る
     </a>
     <p id="zip-note">22枚と「最初の仲間のしるし」、画像一覧が入ったZIPファイルです（約34MB）。<br>パソコンにおすすめです。</p>
-    <p class="sub2" id="zip-sub" hidden>パソコンの方は、<a href="set.zip" download="ホタル農園_2026先行予約者限定セット.zip">ZIPファイル（約34MB）</a>でもまとめて受け取れます。</p>
+    <p class="sub2" id="zip-sub" hidden>パソコンの方は、<a href="set-k.zip" download="ホタル農園_2026先行予約者限定セット.zip">ZIPファイル（約34MB）</a>でもまとめて受け取れます。</p>
   </section>
 
   <section class="more" id="more" aria-label="もうひとつの贈りもの">
@@ -227,7 +227,7 @@
       <button class="kagi" id="kagi" type="button" aria-label="カギを使う"></button>
     </div>
     <p class="kagi-hint">カードの「カギを使う」を、押してみてください。</p>
-    <a class="save card-save" id="card-save" href="shirushi_no001.png" download="ホタル農園_最初の仲間のしるし_No001.png">
+    <a class="save card-save" id="card-save" href="shirushi_kagi_no001.png" download="ホタル農園_最初の仲間のしるし_No001.png">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
       このカードを保存する
     </a>
@@ -463,7 +463,7 @@
       e.preventDefault();
       const go = (f) => watasu([f]).catch(() => {});
       if (cardFile) go(cardFile);
-      else yoi("shirushi_no001.png", "ホタル農園_最初の仲間のしるし_No001.png").then((f) => { cardFile = f; kotobaBox("じゅんびができました。もう一度「このカードを写真に保存する」を押してください。"); });
+      else yoi("shirushi_kagi_no001.png", "ホタル農園_最初の仲間のしるし_No001.png").then((f) => { cardFile = f; kotobaBox("じゅんびができました。もう一度「このカードを写真に保存する」を押してください。"); });
     }
   });
 
@@ -505,7 +505,7 @@
       ents.forEach((en) => {
         if (!en.isIntersecting) return;
         $("shirushi").classList.add("hikari");
-        if (SHARE && !cardFile) yoi("shirushi_no001.png", "ホタル農園_最初の仲間のしるし_No001.png").then((f) => { cardFile = f; }).catch(() => {});
+        if (SHARE && !cardFile) yoi("shirushi_kagi_no001.png", "ホタル農園_最初の仲間のしるし_No001.png").then((f) => { cardFile = f; }).catch(() => {});
         io.disconnect();
       });
     }, { threshold: 0.45 });
