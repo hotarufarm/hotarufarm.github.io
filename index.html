@@ -526,6 +526,17 @@ section:nth-of-type(even) .card{background:#fff}
 }
 @media(max-width:560px){ .block-img{height:200px} }
 .card .more{font-size:.85rem;color:var(--amber);align-self:flex-start}
+/* LINEスタンプ。ボタンはLINEの緑にして、ひと目でLINEと分かるように */
+.line-st{display:flex;gap:14px;align-items:center;flex:1;margin:0 0 18px}
+.line-st img{width:112px;height:112px;flex:none;object-fit:contain}
+.line-st p{margin:0}
+.line-btn{
+  display:flex;align-items:center;justify-content:center;
+  padding:13px 22px;border-radius:999px;background:#06c755;color:#fff;
+  font-weight:500;font-size:.98rem;line-height:1.3;text-align:center;text-decoration:none;
+  box-shadow:0 4px 14px rgba(6,120,60,.22);
+}
+.line-btn:hover{background:#05b34c;color:#fff;text-decoration:none}
 
 /* ── 声 ── */
 /* 投稿は高さがあとから決まる。段組み（column）だと途中で切れ、
@@ -1065,10 +1076,13 @@ footer ul{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;list-style
           <p>物語が<wbr>どうやって<wbr>形に<wbr>なっていくのか。<wbr>うまく<wbr>いかなかった<wbr>日の<wbr>ことも<wbr>含めて、<wbr>制作の<wbr>記録を<wbr> note と<wbr> Substack に<wbr>残していきます。</p>
           <span class="more">準備中</span>
         </div>
-        <div class="card">
-          <h3>グッズ</h3>
-          <p>八人の<wbr>仲間たちの<wbr>グッズを<wbr>準備しています。<wbr>できあがりましたら、<wbr>お知らせで<wbr>ご案内します。</p>
-          <span class="more">準備中</span>
+        <div class="card line-card">
+          <h3>LINEスタンプ</h3>
+          <div class="line-st">
+            <img src="img/line-nishiki.png" alt="LINEスタンプ「ホタル農園のにしき君」。にしき君が「おはよう！」と手をあげている絵" width="112" height="112" loading="lazy">
+            <p>「ホタル農園の<wbr>にしき君」の<wbr> LINEスタンプが<wbr>できました。<wbr>毎日の<wbr>あいさつや<wbr>応援に、<wbr>どうぞ<wbr>使ってください。</p>
+          </div>
+          <a class="line-btn" href="https://line.me/S/sticker/36776626" target="_blank" rel="noopener">LINEスタンプを<wbr>見る</a>
         </div>
       </div>
 
