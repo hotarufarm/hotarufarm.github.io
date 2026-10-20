@@ -720,7 +720,7 @@
     });
 
     $("r-code").textContent = code;
-    $("r-date").textContent = KOUSHIN + "　現在";
+    $("r-date").textContent = (KOUSHIN_IMA || KOUSHIN) + "　現在";
     $("r-left").replaceChildren(document.createTextNode(kz(left)), el("small", null, "kg"));
     $("r-times").textContent = times(left);
     $("r-res").textContent = "ご予約の合計 " + kz(res) + "kg";
@@ -748,7 +748,27 @@
     window.scrollTo(0, 0);
   }
 
-  $("lookup").addEventListener("submit", (e) => {
+  // お届けずみは、ホタルさんの販売帳から読む（発送した日にすぐ変わる）。
+  // つながらないときだけ、このページに書いてある数を出す。
+  const HANBAI = "https://hotaru-hanbai.hotaru-farm.workers.dev";
+  let KOUSHIN_IMA = "";
+  async function todokeWoAwaseru(ban, rows) {
+    try {
+      const ac = new AbortController();
+      const t = setTimeout(() => ac.abort(), 4000);
+      const r = await fetch(HANBAI + "/zan?ban=" + ban.replace(/\D/g, ""), { signal: ac.signal, cache: "no-store" });
+      clearTimeout(t);
+      if (!r.ok) return rows;
+      const td = (await r.json()).todoke || {};
+      const n = new Date();
+      KOUSHIN_IMA = n.getFullYear() + "年" + (n.getMonth() + 1) + "月" + n.getDate() + "日";
+      return rows.map((x) => [x[0], x[1], Math.min(Number(td[x[0]] || 0), x[1])]);
+    } catch (err) {
+      return rows;
+    }
+  }
+
+  $("lookup").addEventListener("submit", async (e) => {
     e.preventDefault();
     const key = clean($("code").value);
     const miss = $("miss");
@@ -762,7 +782,8 @@
       return;
     }
     miss.hidden = true;
-    show(hit, DATA[hit]);
+    $("bubble").textContent = "しらべているよ…";
+    show(hit, await todokeWoAwaseru(hit, DATA[hit]));
   });
 
   $("thanks-open").addEventListener("click", openThanks);
